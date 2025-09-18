@@ -1,0 +1,26 @@
+name: Build and Tests
+
+# Controls when the workflow will run
+on:
+  # Don't do it on pull requests, because students will clone this and use up all the time
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '17.x'
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build --if-present
+      - run: npm test
