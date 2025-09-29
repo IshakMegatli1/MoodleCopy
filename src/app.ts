@@ -49,7 +49,7 @@ class App {
     // Si user.isAnonymous est vrai, le gabarit Pug affiche une option pour se connecter.
     // user = { isAnonymous: true }; // utilisateur quand personne n'est connecté
 
-    // Route pour jouer (index)
+    //Route pour jouer (index)
     router.get('/', (req, res, next) => {
       res.render('index',
         // passer objet au gabarit (template) Pug
@@ -57,8 +57,16 @@ class App {
           title: `${titreBase}`,
           user: user,
           joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
-        });
+      });
     });
+
+    //Pour mettre la page de connexion par défaut
+  //   router.get('/', (req, res) => {
+  //     res.render('signin', {
+  //       title: `${titreBase}`
+  //     });
+  // });
+
 
     // Route pour classement (stats)
     router.get('/stats', (req, res, next) => {

@@ -1,20 +1,62 @@
-@startuml MDD
-skinparam style strictuml
-skinparam ArrowThickness 2
-skinparam ArrowColor #gray
-hide empty members
-title Modèle du domaine (adapté du Jeu de dés du Ch. 1 de Larman)
-class Joueur {
-  nom : String
-  nbParties : int
-  nbPartiesGagnées : int
+@startuml
+title SGA — MDD 
+
+class Universite {
+  listeEtudiants: Map<String, Etudiant>
+  listeEnseignants: Map<String, Enseignant>
 }
-class Dé {
-  valeur : int
+
+class Cours {
+  id: string 
+  titre: string
 }
-class JeuDeDés
-' associations
-Joueur "*" -down- "1" JeuDeDés : joue >
-Joueur "1" -right- "2" Dé : lance >
-JeuDeDés "1" -up- "2" Dé : inclut >
+
+class CoursGroupe {
+  id: string        
+  groupeId: string
+  titre: string
+  enseignant: Enseignant
+  listeEtudiants: Map<String, Etudiant>
+}
+
+class Enseignant {
+  id: string
+  prenom: string 
+  nom: string
+  email: string
+  token: string
+  listeCours: Map<String, CoursGroupe>
+}
+
+class Etudiant {
+  id: string
+  prenom: string
+  nom: string
+  email: string 
+}
+
+enum Mode { 
+  PRESENCE 
+  DISTANCE 
+  HYBRIDE 
+}
+
+' Une séance d’horaire (cours, labo, TP…)
+class Horaire {
+  jour: string     
+  heure: string
+  activite: string
+  mode: Mode
+  local: string
+}
+
+Universite "1" -- "0..*" Etudiant : contient >
+Universite "1" -- "0..*" Enseignant : contient >
+
+Cours "1" -- "0..*" CoursGroupe : identifie >
+CoursGroupe "1" -- "0..*" Horaire : est offert selon >
+Etudiant "0..*" -- "0..*" CoursGroupe : s'inscrit à >
+Enseignant "1" -- "0..*" CoursGroupe : responsable >
+@enduml
+
 @enduml
