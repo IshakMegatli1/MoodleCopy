@@ -50,22 +50,22 @@ class App {
     // user = { isAnonymous: true }; // utilisateur quand personne n'est connecté
 
     //Route pour jouer (index)
-    router.get('/', (req, res, next) => {
-      res.render('index',
-        // passer objet au gabarit (template) Pug
-        {
-          title: `${titreBase}`,
-          user: user,
-          joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
-      });
-    });
+    // router.get('/', (req, res, next) => {
+    //   res.render('index',
+    //     // passer objet au gabarit (template) Pug
+    //     {
+    //       title: `${titreBase}`,
+    //       user: user,
+    //       joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
+    //   });
+    // });
 
     //Pour mettre la page de connexion par défaut
-  //   router.get('/', (req, res) => {
-  //     res.render('signin', {
-  //       title: `${titreBase}`
-  //     });
-  // });
+    router.get('/', (req, res) => {
+      res.render('signin', {
+        title: `${titreBase}`
+      });
+  });
 
 
     // Route pour classement (stats)
