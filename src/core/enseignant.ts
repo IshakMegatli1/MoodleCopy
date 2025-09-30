@@ -7,12 +7,11 @@ export class Enseignant {
   private _token: string
   private _listeCours: Map<String, CoursGroupe>
 
-  constructor(prenom: string, nom: string, id: string, token: string, listeCours: Map<String, CoursGroupe>) {
+  constructor(prenom: string, nom: string, id: string, token: string) {
     this._prenom = prenom
     this._nom = nom
     this._id = id
     this._token = token
-    this._listeCours = new Map<String, CoursGroupe>()
   }
 
   get prenom(): string {

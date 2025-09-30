@@ -4,6 +4,7 @@ import logger from 'morgan';
 import flash from 'express-flash-plus';
 
 import { jeuRoutes } from './routes/jeuRouter';
+import { RouteurEnseignant } from './routes/routeurEnseignant';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -50,22 +51,42 @@ class App {
     // user = { isAnonymous: true }; // utilisateur quand personne n'est connecté
 
     //Route pour jouer (index)
-    // router.get('/', (req, res, next) => {
-    //   res.render('index',
-    //     // passer objet au gabarit (template) Pug
-    //     {
-    //       title: `${titreBase}`,
-    //       user: user,
-    //       joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
-    //   });
-    // });
+    router.get('/', (req, res, next) => {
+      res.render('index',
+        // passer objet au gabarit (template) Pug
+        {
+          title: `${titreBase}`,
+          user: user,
+          joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
+      });
+    });
 
     //Pour mettre la page de connexion par défaut
-    router.get('/', (req, res) => {
-      res.render('signin', {
-        title: `${titreBase}`
-      });
-  });
+  //   router.get('/', (req, res) => {
+  //     res.render('signin', {
+  //       title: `${titreBase}`
+  //     });
+  // });
+
+
+  //Peut etre la route selon si la personne est connectée ou pas
+//   router.get('/', (req, res) => {
+//   // Vérifie si l'utilisateur est connecté via la session
+//   const user = req.session?.user;
+//   if (user && !user.isAnonymous) {
+//     // Si connecté, affiche la page principale
+//     res.render('index', {
+//       title: 'Jeu de dés',
+//       user,
+//       // ...autres variables nécessaires
+//     });
+//   } else {
+//     // Sinon, affiche la page de connexion
+//     res.render('signin', {
+//       title: 'Jeu de dés'
+//     });
+//   }
+// });
 
 
     // Route pour classement (stats)
@@ -103,6 +124,12 @@ class App {
     this.expressApp.use('/', router);  // routage de base
 
     this.expressApp.use('/api/v1/jeu', jeuRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
+
+
+    
+    const enseignantRoutes = new RouteurEnseignant();
+    this.expressApp.use('/api/v1/enseignant', enseignantRoutes.router);
+
   }
 
   private handleErrors(error: any, req: any, res: any, next: NextFunction) {
