@@ -51,7 +51,7 @@ class App {
     // user = { isAnonymous: true }; // utilisateur quand personne n'est connecté
 
     //Route pour jouer (index)
-    router.get('/', (req, res, next) => {
+    router.get('/home', (req, res, next) => {
       res.render('index',
         // passer objet au gabarit (template) Pug
         {
@@ -62,11 +62,11 @@ class App {
     });
 
     //Pour mettre la page de connexion par défaut
-  //   router.get('/', (req, res) => {
-  //     res.render('signin', {
-  //       title: `${titreBase}`
-  //     });
-  // });
+    router.get('/', (req, res) => {
+      res.render('signin', {
+        title: `${titreBase}`
+      });
+  });
 
 
   //Peut etre la route selon si la personne est connectée ou pas

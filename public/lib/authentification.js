@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       localStorage.setItem("token", data.token);
-      location.href = "/";
+      location.href = "/home";
     } catch (err) {
       alert("Login invalide ou utilisateur inconnu.");
       form.email.value = "";
