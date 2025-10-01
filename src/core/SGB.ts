@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'; // npm i node-fetch
+  import fetch from 'node-fetch'; // npm i node-fetch
 
 const BASE = 'http://localhost:3200/api/v3';
 
