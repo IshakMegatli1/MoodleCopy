@@ -1,0 +1,18 @@
+@startuml
+title RDCU ajouterCours
+
+actor "ControleurCours" as ControleurCours
+actor "GroupeCours" as GroupeCours
+actor "Enseignant" as Enseignant
+
+--> ControleurCours : ajouterCours(groupeId: string)
+note right: Par le contrôleur des cours
+
+ControleurCours --> ControleurCours : infoCours = trouverCours(groupeId: string)
+ControleurCours --> ControleurCours : enseignant = trouverEnseignant(token: string)
+ControleurCours --> GroupeCours : nouveauCours = creerCours(infoCours: Cours, enseignant: Enseignant, listeEtudiants: Map<String, Etudiant>)
+
+ControleurCours --> Enseignant : ajouterCours(nouveauCours: CoursGroupe)
+note left: Association du cours à l'enseignant
+hide footbox
+@enduml

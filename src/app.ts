@@ -3,7 +3,15 @@ import ExpressSession from 'express-session';
 import logger from 'morgan';
 import flash from 'express-flash-plus';
 
+// Extend express-session to include 'user' property
+declare module 'express-session' {
+  interface SessionData {
+    user?: any;
+  }
+}
+
 import { jeuRoutes } from './routes/jeuRouter';
+import { RouteurEnseignant } from './routes/routeurEnseignant';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -45,31 +53,36 @@ class App {
     let user;
     // Si l'utilisateur est connecté, le gabarit Pug peut afficher des options, 
     // le nom de l'utilisateur et une option pour se déconnecter.
-    user = { nom: 'Pierre Trudeau', hasPrivileges: true, isAnonymous: false };
+    //user = { nom: 'Pierre Trudeau', hasPrivileges: true, isAnonymous: false };
     // Si user.isAnonymous est vrai, le gabarit Pug affiche une option pour se connecter.
     // user = { isAnonymous: true }; // utilisateur quand personne n'est connecté
 
-    // Route pour jouer (index)
-    router.get('/', (req, res, next) => {
-      res.render('index',
-        // passer objet au gabarit (template) Pug
-        {
-          title: `${titreBase}`,
-          user: user,
-          joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
-        });
+    //Route pour jouer (index)
+    router.get('/home', (req, res, next) => {
+      const user = req.session?.user || { isAnonymous: true };
+      res.render('index', {
+        title: `${titreBase}`,
+        user,
+        joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
+      });
     });
+
+    //Pour mettre la page de connexion par défaut
+    router.get('/', (req, res) => {
+      res.render('signin', {
+        title: `${titreBase}`
+      });
+  });
 
     // Route pour classement (stats)
     router.get('/stats', (req, res, next) => {
-      res.render('stats',
-        // passer objet au gabarit (template) Pug
-        {
-          title: `${titreBase}`,
-          user: user,
-          // créer nouveau tableau de joueurs qui est trié par ratio
-          joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
-        });
+      const user = req.session?.user || { isAnonymous: true };
+      res.render('stats', {
+        title: `${titreBase}`,
+        user,
+        // créer nouveau tableau de joueurs qui est trié par ratio
+        joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
+      });
     });
 
     // Route to login
@@ -84,17 +97,34 @@ class App {
       }
     });
 
-    // Route to login
+    // Route to logout
     router.get('/signout', async function (req, res) {
       // simuler une déconnexion
       user = { isAnonymous: true };
       return res.redirect('/');
     });
 
+    // Route pour créer un cours
+    router.get('/ajouterCours', (req, res, next) => {
+      const user = req.session?.user || { isAnonymous: true };
+      if (user.isAnonymous || !user.hasPrivileges) {
+        return res.status(403).render('error', { message: 'Accès refusé', error: { status: 403, stack: '' } });
+      }
+      res.render('ajouterCours', {
+        title: `${titreBase}`,
+        user
+      });
+    });
 
     this.expressApp.use('/', router);  // routage de base
 
     this.expressApp.use('/api/v1/jeu', jeuRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
+
+
+    
+    const enseignantRoutes = new RouteurEnseignant();
+    this.expressApp.use('/api/v1/enseignant', enseignantRoutes.router);
+
   }
 
   private handleErrors(error: any, req: any, res: any, next: NextFunction) {
