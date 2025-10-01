@@ -104,6 +104,17 @@ class App {
       return res.redirect('/');
     });
 
+    // Route pour créer un cours
+    router.get('/ajouterCours', (req, res, next) => {
+      const user = req.session?.user || { isAnonymous: true };
+      if (user.isAnonymous || !user.hasPrivileges) {
+        return res.status(403).render('error', { message: 'Accès refusé', error: { status: 403, stack: '' } });
+      }
+      res.render('ajouterCours', {
+        title: `${titreBase}`,
+        user
+      });
+    });
 
     this.expressApp.use('/', router);  // routage de base
 
