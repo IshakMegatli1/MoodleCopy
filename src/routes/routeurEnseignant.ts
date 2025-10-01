@@ -2,6 +2,15 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { ControleurEnseignant } from '../core/controleurEnseignant';
 import { InvalidParameterError } from '../core/errors/invalidParameterError';
 
+import session from 'express-session';
+
+declare module 'express-session' {
+  interface SessionData {
+    token?: string;
+    user?: any;
+  }
+}
+
 export class RouteurEnseignant {
   private _router: Router;
   private _ctrl: ControleurEnseignant;
@@ -29,15 +38,21 @@ export class RouteurEnseignant {
     const token = await this._ctrl.authentifier(email, password);
     const ens = await this._ctrl.getEnseignant(token);
 
+    // Store user info in session for navbar
+    req.session.user = {
+      nom: `${ens.prenom} ${ens.nom}`,
+      hasPrivileges: true,
+      isAnonymous: false
+    };
+    req.session.token = token;
+
     res.status(200).send({
       message: 'Success',
       token,
       user: { id: ens.id, firstName: ens.prenom, lastName: ens.nom }
     });
   } catch (e) {
-    // Ne jamais faire planter le serveur : toujours répondre proprement
     res.status(401).json({ message: e.message || 'Login invalide' });
-    // ou : next(e); si tu as un middleware d’erreur global
   }
 }
 

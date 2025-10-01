@@ -3,6 +3,13 @@ import ExpressSession from 'express-session';
 import logger from 'morgan';
 import flash from 'express-flash-plus';
 
+// Extend express-session to include 'user' property
+declare module 'express-session' {
+  interface SessionData {
+    user?: any;
+  }
+}
+
 import { jeuRoutes } from './routes/jeuRouter';
 import { RouteurEnseignant } from './routes/routeurEnseignant';
 
@@ -46,18 +53,17 @@ class App {
     let user;
     // Si l'utilisateur est connecté, le gabarit Pug peut afficher des options, 
     // le nom de l'utilisateur et une option pour se déconnecter.
-    user = { nom: 'Pierre Trudeau', hasPrivileges: true, isAnonymous: false };
+    //user = { nom: 'Pierre Trudeau', hasPrivileges: true, isAnonymous: false };
     // Si user.isAnonymous est vrai, le gabarit Pug affiche une option pour se connecter.
     // user = { isAnonymous: true }; // utilisateur quand personne n'est connecté
 
     //Route pour jouer (index)
     router.get('/home', (req, res, next) => {
-      res.render('index',
-        // passer objet au gabarit (template) Pug
-        {
-          title: `${titreBase}`,
-          user: user,
-          joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
+      const user = req.session?.user || { isAnonymous: true };
+      res.render('index', {
+        title: `${titreBase}`,
+        user,
+        joueurs: JSON.parse(jeuRoutes.controleurJeu.joueurs)
       });
     });
 
@@ -67,27 +73,6 @@ class App {
         title: `${titreBase}`
       });
   });
-
-
-  //Peut etre la route selon si la personne est connectée ou pas
-//   router.get('/', (req, res) => {
-//   // Vérifie si l'utilisateur est connecté via la session
-//   const user = req.session?.user;
-//   if (user && !user.isAnonymous) {
-//     // Si connecté, affiche la page principale
-//     res.render('index', {
-//       title: 'Jeu de dés',
-//       user,
-//       // ...autres variables nécessaires
-//     });
-//   } else {
-//     // Sinon, affiche la page de connexion
-//     res.render('signin', {
-//       title: 'Jeu de dés'
-//     });
-//   }
-// });
-
 
     // Route pour classement (stats)
     router.get('/stats', (req, res, next) => {
@@ -113,7 +98,7 @@ class App {
       }
     });
 
-    // Route to login
+    // Route to logout
     router.get('/signout', async function (req, res) {
       // simuler une déconnexion
       user = { isAnonymous: true };
