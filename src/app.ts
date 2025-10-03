@@ -13,6 +13,7 @@ declare module 'express-session' {
 import { jeuRoutes } from './routes/jeuRouter';
 import { RouteurEnseignant } from './routes/routeurEnseignant';
 import { RouteurCours } from './routes/routeurCours';
+import { RouteurEtudiant } from './routes/routeurEtudiant';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -117,6 +118,18 @@ class App {
       });
     });
 
+    // Route pour gérer mes cours
+    router.get('/mesCours', (req, res, next) => {
+      const user = req.session?.user || { isAnonymous: true };
+      if (user.isAnonymous || !user.hasPrivileges) {
+        return res.status(403).render('error', { message: 'Accès refusé', error: { status: 403, stack: '' } });
+      }
+      res.render('mesCours', {
+        title: `${titreBase}`,
+        user
+      });
+    });
+
     this.expressApp.use('/', router);  // routage de base
 
     this.expressApp.use('/api/v1/jeu', jeuRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
@@ -125,8 +138,10 @@ class App {
     
     const enseignantRoutes = new RouteurEnseignant();
     const routeurCours = new RouteurCours();
+    const routeurEtudiant = new RouteurEtudiant();
     this.expressApp.use('/api/v1/enseignant', enseignantRoutes.router);
     this.expressApp.use('/api/v1/cours', routeurCours.router);
+    this.expressApp.use('/api/v1/etudiant', routeurEtudiant.router);
   }
 
   private handleErrors(error: any, req: any, res: any, next: NextFunction) {

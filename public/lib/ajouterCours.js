@@ -93,6 +93,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.body.appendChild(container);
   }
 
+  function creerBoiteEtudiant(cours) {
+  }
+
   //Récupération de l'email du professeur connecté
   const email = localStorage.getItem('email');
   if (!email) {

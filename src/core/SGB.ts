@@ -70,6 +70,18 @@ export class SGB {
       teacher_id: string;
     }>).filter(cours => cours.teacher_id === email);
   }
+
+  // GET /student/all
+  static async getListeEtudiants(): Promise<Array<{
+    first_name: string;
+    last_name: string;
+    id: string;
+  }>> {
+    const r = await fetch(`${BASE}/student/all`);
+    if (!r.ok) throw new Error(`SGB /student/all ${r.status}`);
+    const json: any = await r.json();
+    return json.data as Array<{ first_name: string; last_name: string; id: string }>;
+  }
 }
 
 
