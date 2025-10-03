@@ -1,9 +1,9 @@
-  import fetch from 'node-fetch'; // npm i node-fetch
+import fetch from 'node-fetch'; // npm i node-fetch
 
 const BASE = 'http://localhost:3200/api/v3';
 
 export class SGB {
-  /** GET /teacher/login?email&password -> {message, token, user} */
+  // GET /teacher/login?email&password
   static async authentifierEnseignant(email: string, password: string): Promise<{
   message: string;
   token: string;
@@ -22,7 +22,7 @@ export class SGB {
 }
 
 
-  /** GET /teacher/fromtoken?token -> {user} */
+  // GET /teacher/fromtoken?token -> {user} 
   static async getEnseignant(token: string): Promise<{
   user: { first_name: string; last_name: string; id: string };
 }> {
@@ -37,7 +37,7 @@ export class SGB {
 }
 
 
-  /** (optionnel) GET /teacher/all -> [{...}] */
+  // GET /teacher/all
   static async getTousLesEnseignants(): Promise<
     Array<{ first_name: string; last_name: string; id: string }>
   > {
@@ -45,4 +45,31 @@ export class SGB {
     if (!r.ok) throw new Error(`SGB /teacher/all ${r.status}`);
     return r.json() as Promise<Array<{ first_name: string; last_name: string; id: string }>>;
   }
+
+  // GET /Schedule/all
+  static async getListeCours(email: string): Promise<Array<{
+    group_id: string;
+    day: string;
+    hours: string;
+    activity: string;
+    mode: string;
+    local: string;
+    teacher_id: string;
+  }>> {
+    const r = await fetch(`${BASE}/Schedule/all`);
+    if (!r.ok) throw new Error(`SGB /Schedule/all ${r.status}`);
+    const json: any = await r.json();
+    // Filtrer seulement les cours avec le professeur connecté
+    return (json.data as Array<{
+      group_id: string;
+      day: string;
+      hours: string;
+      activity: string;
+      mode: string;
+      local: string;
+      teacher_id: string;
+    }>).filter(cours => cours.teacher_id === email);
+  }
 }
+
+

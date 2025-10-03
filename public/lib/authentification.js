@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       localStorage.setItem("token", data.token);
+      localStorage.setItem("email", email); // store email for later use
       location.href = "/home";
     } catch (err) {
       alert("Login invalide ou utilisateur inconnu.");

@@ -12,6 +12,7 @@ declare module 'express-session' {
 
 import { jeuRoutes } from './routes/jeuRouter';
 import { RouteurEnseignant } from './routes/routeurEnseignant';
+import { RouteurCours } from './routes/routeurCours';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -123,8 +124,9 @@ class App {
 
     
     const enseignantRoutes = new RouteurEnseignant();
+    const routeurCours = new RouteurCours();
     this.expressApp.use('/api/v1/enseignant', enseignantRoutes.router);
-
+    this.expressApp.use('/api/v1/cours', routeurCours.router);
   }
 
   private handleErrors(error: any, req: any, res: any, next: NextFunction) {
