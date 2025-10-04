@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
   // Fonction qui permet de créer une boîte de cours
-  function creerBoiteCours(groupId) {
+  function creerBoiteCours(cours) {
     const container = document.createElement('div');
     container.className = 'box-ajouter-cours';
     container.style.display = 'flex';
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     //Nom du groupe
     const label = document.createElement('span');
-    label.textContent = groupId;
+    label.textContent = cours.group_id;
     label.style.fontWeight = 'bold';
     label.style.fontSize = '1.1rem';
     label.style.margin = '0 0.5rem 0 0';
@@ -46,6 +46,28 @@ document.addEventListener('DOMContentLoaded', async function () {
     container.appendChild(btnInfos);
     container.appendChild(btnAjouter);
     document.body.appendChild(container);
+
+    // Ajout de l'écouteur sur le bouton Informations
+    btnInfos.addEventListener('click', async function () {
+      // Remove old info and student boxes
+      const oldBox = document.querySelector('.box-infos-cours');
+      if (oldBox) oldBox.remove();
+      const oldStudents = document.querySelector('.box-etudiants-cours');
+      if (oldStudents) oldStudents.remove();
+
+      // Show course info
+      creerBoiteInfos(cours);
+
+      // Fetch and show students
+      try {
+        const res = await fetch(`/api/v1/cours/${cours.group_id}/students`);
+        if (!res.ok) throw new Error();
+        const students = await res.json();
+        creerBoiteEtudiant(students);
+      } catch {
+        creerBoiteEtudiant([]);
+      }
+    });
   }
 
   function creerBoiteInfos(cours) {
@@ -93,7 +115,45 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.body.appendChild(container);
   }
 
-  function creerBoiteEtudiant(cours) {
+  function creerBoiteEtudiant(students) {
+    // Remove old student box if exists
+    const oldBox = document.querySelector('.box-etudiants-cours');
+    if (oldBox) oldBox.remove();
+
+    const container = document.createElement('div');
+    container.className = 'box-etudiants-cours';
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.alignItems = 'flex-start';
+    container.style.justifyContent = 'center';
+    container.style.gap = '0.3rem';
+    container.style.margin = '1rem auto';
+    container.style.maxWidth = '320px';
+    container.style.padding = '0.75rem 1rem';
+    container.style.border = '1px solid #28a745';
+    container.style.borderRadius = '8px';
+    container.style.background = '#f3fff3';
+    container.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+
+    const title = document.createElement('div');
+    title.innerHTML = `<strong>Étudiants du cours :</strong>`;
+    container.appendChild(title);
+
+    if (students.length === 0) {
+      const empty = document.createElement('div');
+      empty.textContent = 'Aucun étudiant inscrit.';
+      container.appendChild(empty);
+    } else {
+      const ul = document.createElement('ul');
+      students.forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = `${s.first_name} ${s.last_name} (${s.id})`;
+        ul.appendChild(li);
+      });
+      container.appendChild(ul);
+    }
+
+    document.body.appendChild(container);
   }
 
   //Récupération de l'email du professeur connecté
@@ -103,7 +163,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     return;
   }
 
-  // Fetch tout les cours du professeur connecté
+  // Fetch tous les cours du professeur connecté
   try {
     const response = await fetch('/api/v1/cours?email=' + encodeURIComponent(email));
     if (!response.ok) throw new Error('Erreur lors de la récupération des cours');
@@ -118,22 +178,10 @@ document.addEventListener('DOMContentLoaded', async function () {
       document.body.appendChild(msg);
       return;
     }
-    // Pour chaque group_id unique, créer une boîte et lier le bouton à l'affichage des infos du bon cours
+    // Pour chaque group_id unique, créer une boîte avec le bon objet cours
     uniqueGroupIds.forEach(groupId => {
-      creerBoiteCours(groupId);
-      // Sélectionner la dernière boîte créée
-      const allBoxes = document.querySelectorAll('.box-ajouter-cours');
-      const box = allBoxes[allBoxes.length - 1];
-      const btnInfos = box.querySelector('button:nth-of-type(1)');
-      // Corriger : seul le bouton Informations affiche les infos
-      btnInfos.addEventListener('click', function () {
-        // Supprimer l'ancienne boîte d'infos s'il y en a une
-        const oldBox = document.querySelector('.box-infos-cours');
-        if (oldBox) oldBox.remove();
-        // Trouver le premier cours correspondant à ce group_id
-        const cours = filtered.find(c => c.group_id === groupId);
-        if (cours) creerBoiteInfos(cours);
-      });
+      const cours = filtered.find(c => c.group_id === groupId);
+      if (cours) creerBoiteCours(cours);
     });
   } catch (err) {
     alert('Erreur lors de la récupération des cours.');

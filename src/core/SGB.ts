@@ -82,6 +82,18 @@ export class SGB {
     const json: any = await r.json();
     return json.data as Array<{ first_name: string; last_name: string; id: string }>;
   }
+
+  static async getEtudiantsDuGroupe(groupId: string): Promise<Array<{
+    group_id: string;
+    student_id: string;
+  }>> {
+    const qs = new URLSearchParams({ group_id: groupId }).toString();
+    const r = await fetch(`${BASE}/student/groupstudent?${qs}`);
+    if (!r.ok) throw new Error(`SGB /student/groupstudent ${r.status}`);
+    const json: any = await r.json();
+    return json.data as Array<{ group_id: string; student_id: string }>;
+  }
+  
 }
 
 

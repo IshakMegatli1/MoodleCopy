@@ -63,7 +63,7 @@
         "express-session": "^1.18.1",
         "md5": "^2.3.0",
         "morgan": "^1.10.0",
-        "node-fetch": "^3.3.2",
+        "node-fetch": "^2.7.0",
         "pug": "^3.0.3"
     }
 }
