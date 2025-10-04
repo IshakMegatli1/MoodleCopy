@@ -1,4 +1,17 @@
-window.listeCoursProf = JSON.parse(localStorage.getItem('listeCoursProf') || '[]');
+// Fonction utilitaire pour obtenir la clé de stockage selon l'email
+function getListeCoursProfKey(email) {
+  return `listeCoursProf_${email}`;
+}
+
+// Récupération de l'email du professeur connecté
+const email = localStorage.getItem('email');
+if (!email) {
+  alert('Aucun email de professeur trouvé.');
+  throw new Error('Aucun email de professeur trouvé.');
+}
+
+// Initialisation de la liste des cours du professeur connecté
+window.listeCoursProf = JSON.parse(localStorage.getItem(getListeCoursProfKey(email)) || '[]');
 
 document.addEventListener('DOMContentLoaded', async function () {
   // Fonction qui permet de créer une boîte de cours
@@ -51,7 +64,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Ajout de l'écouteur sur le bouton Ajouter
     btnAjouter.addEventListener('click', async function () {
-      window.listeCoursProf = JSON.parse(localStorage.getItem('listeCoursProf') || '[]');
+      // Toujours utiliser la clé spécifique à l'email
+      window.listeCoursProf = JSON.parse(localStorage.getItem(getListeCoursProfKey(email)) || '[]');
       if (!window.listeCoursProf.some(c => c.group_id === cours.group_id)) {
         // Récupère les étudiants du cours (SGB)
         let listeEtudiants = [];
@@ -64,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Ajoute la liste d'étudiants à l'objet cours (postcondition)
         const coursComplet = { ...cours, listeEtudiants };
         window.listeCoursProf.push(coursComplet);
-        localStorage.setItem('listeCoursProf', JSON.stringify(window.listeCoursProf));
+        localStorage.setItem(getListeCoursProfKey(email), JSON.stringify(window.listeCoursProf));
         alert('Cours ajouté à la liste du professeur !');
         console.log(window.listeCoursProf);
       } else {
@@ -179,13 +193,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     document.body.appendChild(container);
-  }
-
-  //Récupération de l'email du professeur connecté
-  const email = localStorage.getItem('email');
-  if (!email) {
-    alert('Aucun email de professeur trouvé.');
-    return;
   }
 
   // Fetch tous les cours du professeur connecté

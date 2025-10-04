@@ -1,4 +1,16 @@
-window.listeCoursProf = JSON.parse(localStorage.getItem('listeCoursProf') || '[]');
+// Fonction utilitaire pour obtenir la clé de stockage selon l'email
+function getListeCoursProfKey(email) {
+  return `listeCoursProf_${email}`;
+}
+
+// Récupération de l'email du professeur connecté
+const email = localStorage.getItem('email');
+if (!email) {
+  alert('Aucun email de professeur trouvé.');
+  throw new Error('Aucun email de professeur trouvé.');
+}
+
+window.listeCoursProf = JSON.parse(localStorage.getItem(getListeCoursProfKey(email)) || '[]');
 
 document.addEventListener('DOMContentLoaded', function () {
   // S'assurer qu'il y a un conteneur dédié dans la page
@@ -53,8 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     btnSupprimer.addEventListener('click', function () {
       if (!confirm('Voulez-vous vraiment supprimer ce cours ?')) return;
-      window.listeCoursProf = window.listeCoursProf.filter(c => c.group_id !== cours.group_id);
-      localStorage.setItem('listeCoursProf', JSON.stringify(window.listeCoursProf));
+  window.listeCoursProf = window.listeCoursProf.filter(c => c.group_id !== cours.group_id);
+  localStorage.setItem(getListeCoursProfKey(email), JSON.stringify(window.listeCoursProf));
       // Supprimer la boîte d'infos et la boîte d'étudiants si elles concernent ce cours
       const infoBox = document.querySelector('.box-infos-cours');
       if (infoBox && infoBox.textContent.includes(cours.group_id)) infoBox.remove();
