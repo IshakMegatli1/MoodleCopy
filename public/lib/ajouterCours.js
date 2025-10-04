@@ -1,3 +1,5 @@
+window.listeCoursProf = JSON.parse(localStorage.getItem('listeCoursProf') || '[]');
+
 document.addEventListener('DOMContentLoaded', async function () {
   // Fonction qui permet de créer une boîte de cours
   function creerBoiteCours(cours) {
@@ -46,6 +48,29 @@ document.addEventListener('DOMContentLoaded', async function () {
     container.appendChild(btnInfos);
     container.appendChild(btnAjouter);
     document.body.appendChild(container);
+
+    // Ajout de l'écouteur sur le bouton Ajouter
+    btnAjouter.addEventListener('click', async function () {
+      window.listeCoursProf = JSON.parse(localStorage.getItem('listeCoursProf') || '[]');
+      if (!window.listeCoursProf.some(c => c.group_id === cours.group_id)) {
+        // Récupère les étudiants du cours (SGB)
+        let listeEtudiants = [];
+        try {
+          const res = await fetch(`/api/v1/cours/${cours.group_id}/students`);
+          if (res.ok) {
+            listeEtudiants = await res.json();
+          }
+        } catch {}
+        // Ajoute la liste d'étudiants à l'objet cours (postcondition)
+        const coursComplet = { ...cours, listeEtudiants };
+        window.listeCoursProf.push(coursComplet);
+        localStorage.setItem('listeCoursProf', JSON.stringify(window.listeCoursProf));
+        alert('Cours ajouté à la liste du professeur !');
+        console.log(window.listeCoursProf);
+      } else {
+        alert('Ce cours est déjà dans la liste du professeur.');
+      }
+    });
 
     // Ajout de l'écouteur sur le bouton Informations
     btnInfos.addEventListener('click', async function () {
@@ -128,7 +153,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     container.style.justifyContent = 'center';
     container.style.gap = '0.3rem';
     container.style.margin = '1rem auto';
-    container.style.maxWidth = '320px';
+    container.style.maxWidth = '340px';
     container.style.padding = '0.75rem 1rem';
     container.style.border = '1px solid #28a745';
     container.style.borderRadius = '8px';

@@ -47,7 +47,7 @@ class App {
 
   // Configure API endpoints.
   private routes(): void {
-    const titreBase = 'Jeu de dés';
+    const titreBase = 'Moodle';
     let router = express.Router();
     // Le squelette ne traite pas la gestion des connexions d'utilisateur, mais
     // les gabarits Pug (navbar) supportent l'affichage selon l'état de connexion 
