@@ -218,5 +218,14 @@ document.addEventListener('DOMContentLoaded', async function () {
   } catch (err) {
     alert('Erreur lors de la récupération des cours.');
   }
+
+  // À la fin du DOMContentLoaded handler, expose pour les tests
+  if (typeof window !== 'undefined') {
+    window.__tests = window.__tests || {};
+    window.__tests.creerBoiteCours = typeof creerBoiteCours !== 'undefined' ? creerBoiteCours : window.__tests.creerBoiteCours;
+    window.__tests.creerBoiteEtudiant = typeof creerBoiteEtudiant !== 'undefined' ? creerBoiteEtudiant : window.__tests.creerBoiteEtudiant;
+    window.__tests.creerBoiteInfos = typeof creerBoiteInfos !== 'undefined' ? creerBoiteInfos : window.__tests.creerBoiteInfos;
+    window.__tests.getListeCoursProfKey = typeof getListeCoursProfKey !== 'undefined' ? getListeCoursProfKey : window.__tests.getListeCoursProfKey;
+  }
 });
 
