@@ -1,43 +1,25 @@
 html
   include includes/head.pug
   body
-    +navbar("Jeu de dés", user)
-    //- les .container, .alert, .col-sm-4, etc. sont des directives de Bootstrap
+    +navbar("SGA", user)
+
     if !user.isAnonymous
-      div.container
-        h1 Jouer
+      // Conteneur principal centré verticalement et horizontalement
+      div.d-flex.justify-content-center.align-items-center.min-vh-100
+        div.text-center.container
+          h1.mb-3 📘 Système de Gestion de l’Apprentissage (SGA)
+          p.lead Ce projet a été développé dans le cadre du cours 
+            strong LOG210 – Conception et analyse logicielle
+            |  à l'École de technologie supérieure (ÉTS).
+          p.mt-3 Cette plateforme vise à simuler la gestion d’un environnement académique — incluant les cours, les questionnaires et la gestion des utilisateurs — dans un contexte d’apprentissage logiciel.
+          p.mt-4.text-muted Utilisez le menu en haut de la page pour accéder aux différentes sections du système.
 
-        .messages
-          if (messages.info)
-            each message in messages.info
-              div.flash.alert.alert-info.col-sm-4 #{message}
-          if (messages.win)
-            each message in messages.win
-              div.flash.alert.alert-success.col-sm-4 #{message}
-          if (messages.error)
-            each message in messages.error
-              div.flash.alert.alert-danger.col-sm-4 #{message}
-
-        form#formNouveauJoueur.form-group(action='javascript:void(0);')
-          dl
-            dt Nom du nouveau joueur
-            dd
-              input.form-control.col-sm-6(name='nom' type='text')
-          button#demarrer Démarrer
-
-        h3 Joueurs
-        //- .entries est défini dans /css/style.css
-        ul.entries
-          each joueur in joueurs
-            li.joueur
-              -var nom = joueur.nom;
-              strong(id=nom) #{nom}
-              = ' '
-              | tentatives: #{joueur.lancers}, réussites: #{joueur.lancersGagnes}
-              = ' '
-              button.lancer(id=nom) Lancer dés
-              = ' '
-              button.terminer(id=nom) Terminer
-          else
-            li
-              em Pas de joueurs encore.
+    else
+      div.d-flex.justify-content-center.align-items-center.min-vh-100
+        div.text-center.container
+          h1.mb-3 📘 Bienvenue sur la plateforme SGA
+          p.lead Cette application a été développée dans le cadre du cours 
+            strong LOG210 – Conception et analyse logicielle
+            |  à l'École de technologie supérieure (ÉTS).
+          p.mt-3 Connectez-vous pour accéder aux fonctionnalités du système.
+          p.mt-4.text-muted Utilisez le menu en haut de la page pour naviguer.
