@@ -8,74 +8,63 @@ title Modèle du domaine
 
 together {
 
-  class Utilisateur {
-    codePermanent : String
+  class Etudiant {
+    id : String
     nom : String
     prenom : String
-    courriel : Sring
-    motDePasse : String
   }
-  class Étudiant {
 
+  class ControleurCours {
+
+  }
+
+  class ControleurEnseignant {
+
+  }
+
+  class ControleurEtudiant {
+
+  }
+
+  class Université {
+    listeEtudiant : Map<String,Etudiant>
+    listeEnseignant : Map<String,Enseignant>
   }
   class Enseignant {
-    bureau : String
+    prenom : String
+    nom : String
+    idtoken : String
+    liste : Map<String,Cours>
   }
 
 }
 
-together {
 
-  class CatalogueGroupeCours {}
-
-  class Cours {
-    sigle : String
-    nbCreduits : Number
+  class CoursGroupe {
+    groupID : String
+    day : String
+    hours : String
+    activity : String
+    mode : String
+    local : String
+    teacherID : String
+    listeEtudiant : Map<String,Etudiant>
+    
   }
 
-  class GroupeCours {
-    numGroupe : Number
-    nbParticipant: int
-  }
   
-  class Session {
-    nomAbrege : String 
-    nomComplet : String
-    trimestre : Number 
-    annee : Number
-  }
-  together {
-
-  }
-}
+  
 
 
-together {
-  class Question {
-    idQuestion : Number
-    nom : String
-    énoncé : String
-    msgRétroactionVrai : String
-    msgRétroactionFaux : String
-  }
-  class TypeQuestionGIFT {}
 
-  class Questionnaire {
-    idQuestionnaire : Number
-    nom : String
-    description : String
-  }
-}
 
 ' associations
-Utilisateur  "l" <|-- Étudiant
-Utilisateur "l" <|-- Enseignant 
 
-CatalogueGroupeCours "1" -- "*" GroupeCours :  Répertorie >
-Cours "1" -- "1" GroupeCours : Décrit >
-Enseignant "1" -- "*" GroupeCours : Donne > 
-GroupeCours "1" -- "*" Questionnaire : Exige > 
-GroupeCours "1-*" -- "1" Session : Est-donnée > 
-Questionnaire "1" -- "*" Question : Contient >
-Question "1" -- "1" TypeQuestionGIFT : Est-de-type >
+Enseignant "1" -- "*" CoursGroupe : Enseigne > 
+Etudiant "1" -- "*" CoursGroupe : Suit un >
+Université "1" -- "*" Etudiant : inscrit dans <
+Université "1" -- "*" Enseignant : travail dans <
+ControleurEtudiant "1" -- "*" Etudiant : gere >
+ControleurEnseignant "1" -- "*" Enseignant : gere >
+ControleurCours "1" -- "*" CoursGroupe : gere >
 @enduml

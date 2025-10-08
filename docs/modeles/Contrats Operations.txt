@@ -1,0 +1,39 @@
+Opération : getListeCours(courriel: String)
+
+Post Conditions :
+
+-L'enseignant courant a été associé à sa liste de cours courante
+
+________________________________________________________________________
+
+Opération : ajouterCours(e: Enseignant ; cg: CoursGroupe)
+
+Post Conditions :
+
+-Le cours courant a été ajouté à la liste de cours de l'enseignant courant
+
+________________________________________________________________________
+
+Opération : genererListe(courriel)
+
+Post Conditions : 
+
+-L'enseignant courant a été associé à sa liste de cours courante
+________________________________________________________________________
+
+Opération : creerBoiteCours(c: Cours)
+
+Post Conditions :
+
+-L'enseignant courant a été associé au controleur de cours courant.
+
+
+________________________________________________________________________
+
+Opération : remove(c: cours)
+
+Post Conditions :
+
+-Le cours courant a été supprimé à la liste de cours de l'enseignant courant
+________________________________________________________________________
+

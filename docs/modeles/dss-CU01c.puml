@@ -8,9 +8,8 @@ skinparam sequence {
 title DSS pour retirer un cours
 actor ":Enseignant" as c
 participant ":Système" as s
-c->s : deleteCours(String sigle)
+c->s : remove(c : cours)
 c<<--s : demande confirmation pour supprimer le cours
-c->s : confirmSuppression(String sigle)
 c<<--s : supprime le cours et affiche la nouvelle liste de cours de l'enseignant
 
 @enduml

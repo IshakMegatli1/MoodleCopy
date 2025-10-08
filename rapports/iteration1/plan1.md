@@ -5,8 +5,8 @@
 | Étape jalon          | Date       |
 | :------------------- | :--------- |
 | Début de l'itération | 2025/09/24 |
-| Démo (séance 5)      | 2025/10/01 |
-| Fin de l'itération   | 2025/10/01 |
+| Démo (séance 5)      | 2025/10/08 |
+| Fin de l'itération   | 2025/10/08 |
 
 ## Objectifs clés
 - Présenter une démonstration technique de CU01 avec tests (2.5 points).
@@ -19,20 +19,16 @@ Les éléments de travail suivants seront abordés dans cette itération:
 | Nom / Description                | Priorité | [Taille estimée (points)](#commentEstimer "Comment estimer?") | Assigné à (nom) | Documents de référence |
 | -------------------------------- | -------: | --------------------------: | ---------------------------| --------------------------------------      |
 | CU01                             | 1        | 2.5                         |                            |                                             |
-|   CU01 - analyse                 | 1        | 2.5                         | Philippe                   | Exigences pour le lab / cas d'utilisations  |
+|   CU01 - analyse                 | 1        |                          | Philippe                   | Exigences pour le lab / cas d'utilisations  |
 |   CU01 - conception              |          |                             | Philippe                   | Exigences pour le lab / cas d'utilisations  |
 |   CU01 - test et implémentation  |          |                             | Ishak/Daniel               |                                             |
 |   CU01 - mise à jour des modèles |          |                             | Philippe/Daniel            |                                             |
-| CU02a                            | 1        | 2                           |                            | Exigences pour le lab                       |
+| CU02a                            | 1        | 2                           |                            | Exigences pour le lab / cas d'utilisations                       |
 | CU02a - conception               |          |                             | Marc-Sheldon Bazelais      |                                             |
 | CU02a - test et implémentation   |          |                             | Marc-Sheldon Bazelais      |                                             |
 | CU02a - mise à jour des modèles  |          |                             | Marc-Sheldon Bazelais      |                                             |
 
 ## Problèmes
-
-> Afficher tous les problèmes à résoudre lors de l'itération. Mettre à jour le statut lorsque de nouvelles questions sont présentées au cours des réunions.
-> Si vous n'avez pas (eu) de problème, écrivez-le avec "Sans objet". Sinon, c'est comme si vous n'aviez pas fait la section.
-
 | Problème                                                                                             | Notes |
 | ---------------------------------------------------------------------------------------------------- | ----- |
 | Sans Objet                                                                                           | ----- |
@@ -50,8 +46,8 @@ Les éléments de travail suivants seront abordés dans cette itération:
 | Résumé | |
 | ------------------------------------- | ------------------------------------------------------------------------ |
 | Cible d'évaluation                    | Itération <!-- *Cela pourrait être toute l'itération ou simplement un composant spécifique* -->                            |
-| Date d'évaluation  |   2019/05/16 |
-| Participants       | **Coéquipiers** : Jérémie, Jacques-Éric, Pierre (Hélène avait une absence justifiée),<br> **auxiliaire d'enseignement** : Jonathan Mayhem |
+| Date d'évaluation  |   2025/10/08 |
+| Participants       | **Coéquipiers** : Philippe, Ishak, Daniel, Marc-Sheldon<br> **Auxiliaire d'enseignement** : Moustavi-Al-Manee Haque |
 | État du projet     | 🟢 <!-- 🔴🟠🟢 *Rouge, Orange, ou Vert.* --> |
 
 ### Questions d'évaluation

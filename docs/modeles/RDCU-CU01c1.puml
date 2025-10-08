@@ -1,10 +1,10 @@
 @startuml
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU pour supprimer un cours
+title RDCU pour afficher l'information d'un cours
 participant ":ControleurCours" as c
-->c : deleteCours(String sigle)
-note right : selon Contrôleur
-<--c : return confirmationSuppression(String sigle)
+    ->c : remove(c: Cours)
+    note right : selon Contrôleur
+    <--c : return nouvelle liste
 
 @enduml

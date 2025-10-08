@@ -10,7 +10,7 @@ actor ":Enseignant" as c
 participant ":Système" as s
 c->s : genererListe(courriel)
 c<<--s : affiche liste de groupe-cours de l'enseignant
-c->s : getCours(cour)
+c->s : creerBoiteCours(c: Cours)
 c<<--s : affiche information du cours et liste d'étudiants inscrits au cours
 
 @enduml
