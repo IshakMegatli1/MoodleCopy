@@ -1,0 +1,16 @@
+@startuml
+
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour récupération d'un cours
+actor ":Enseignant" as c
+participant ":Système" as s
+c->s : genererListe(courriel)
+c<<--s : affiche liste de groupe-cours de l'enseignant
+c->s : getCours(cour)
+c<<--s : affiche information du cours et liste d'étudiants inscrits au cours
+
+@enduml

@@ -2,19 +2,80 @@
 skinparam style strictuml
 skinparam ArrowThickness 2
 skinparam ArrowColor #gray
+
 hide empty members
-title Modèle du domaine (adapté du Jeu de dés du Ch. 1 de Larman)
-class Joueur {
-  nom : String
-  nbParties : int
-  nbPartiesGagnées : int
+title Modèle du domaine
+
+together {
+
+  class Utilisateur {
+    codePermanent : String
+    nom : String
+    prenom : String
+    courriel : Sring
+    motDePasse : String
+  }
+  class Étudiant {
+
+  }
+  class Enseignant {
+    bureau : String
+  }
+
 }
-class Dé {
-  valeur : int
+
+together {
+
+  class CatalogueGroupeCours {}
+
+  class Cours {
+    sigle : String
+    nbCreduits : Number
+  }
+
+  class GroupeCours {
+    numGroupe : Number
+    nbParticipant: int
+  }
+  
+  class Session {
+    nomAbrege : String 
+    nomComplet : String
+    trimestre : Number 
+    annee : Number
+  }
+  together {
+
+  }
 }
-class JeuDeDés
+
+
+together {
+  class Question {
+    idQuestion : Number
+    nom : String
+    énoncé : String
+    msgRétroactionVrai : String
+    msgRétroactionFaux : String
+  }
+  class TypeQuestionGIFT {}
+
+  class Questionnaire {
+    idQuestionnaire : Number
+    nom : String
+    description : String
+  }
+}
+
 ' associations
-Joueur "*" -down- "1" JeuDeDés : joue >
-Joueur "1" -right- "2" Dé : lance >
-JeuDeDés "1" -up- "2" Dé : inclut >
+Utilisateur  "l" <|-- Étudiant
+Utilisateur "l" <|-- Enseignant 
+
+CatalogueGroupeCours "1" -- "*" GroupeCours :  Répertorie >
+Cours "1" -- "1" GroupeCours : Décrit >
+Enseignant "1" -- "*" GroupeCours : Donne > 
+GroupeCours "1" -- "*" Questionnaire : Exige > 
+GroupeCours "1-*" -- "1" Session : Est-donnée > 
+Questionnaire "1" -- "*" Question : Contient >
+Question "1" -- "1" TypeQuestionGIFT : Est-de-type >
 @enduml

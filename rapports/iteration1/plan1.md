@@ -17,15 +17,16 @@
 Les éléments de travail suivants seront abordés dans cette itération:
 
 | Nom / Description                | Priorité | [Taille estimée (points)](#commentEstimer "Comment estimer?") | Assigné à (nom) | Documents de référence |
-| -------------------------------- | -------: | --------------------------: | --------------- | ---------------------- |
-| CU01                             | 1        | 2.5                           | (tous)          | Exigences pour le lab  |
-|   CU01 - conception                |          |                             | Daniel    |                        |
-|   CU01 - test et implémentation     |          |                             | Ishak          |                        |
-|   CU01 - mise à jour des modèles |          |                             | Daniel          |                        |
-| CU02a                             | 1        | 2                           | (tous)          | Exigences pour le lab  |
-| CU02a - conception                |          |                             | Ishak         |                        |
-| CU02a - test et implémentation     |          |                             | Daniel          |                        |
-| CU02a - mise à jour des modèles |          |                             | Daniel et Ishak          |                        |
+| -------------------------------- | -------: | --------------------------: | ---------------------------| --------------------------------------      |
+| CU01                             | 1        | 2.5                         |                            |                                             |
+|   CU01 - analyse                 | 1        | 2.5                         | Philippe                   | Exigences pour le lab / cas d'utilisations  |
+|   CU01 - conception              |          |                             | Philippe                   | Exigences pour le lab / cas d'utilisations  |
+|   CU01 - test et implémentation  |          |                             | Ishak/Daniel               |                                             |
+|   CU01 - mise à jour des modèles |          |                             | Philippe/Daniel            |                                             |
+| CU02a                            | 1        | 2                           |                            | Exigences pour le lab                       |
+| CU02a - conception               |          |                             | Marc-Sheldon Bazelais      |                                             |
+| CU02a - test et implémentation   |          |                             | Marc-Sheldon Bazelais      |                                             |
+| CU02a - mise à jour des modèles  |          |                             | Marc-Sheldon Bazelais      |                                             |
 
 ## Problèmes
 
@@ -34,11 +35,7 @@ Les éléments de travail suivants seront abordés dans cette itération:
 
 | Problème                                                                                             | Notes |
 | ---------------------------------------------------------------------------------------------------- | ----- |
-| L'Équipe ne comprend pas bien les "router handlers" dans Express                                     |       |
-| ~~Jacques-Éric n'a pas pu installer VSCode sur sa machine~~                                   |       |
-| Jacques-Éric a écrasé le code de plusieurs coéquipiers. | Jacques-Éric va suivre un tutoriel sur git pour mieux comprendre les conflits et pour utiliser les branches. |
-| Hélène part pour un match de Volleyball lors de la 3e semaine et ne sera pas disponible pour la démo |       |
-
+| Sans Objet                                                                                           | ----- |
 ## Critères d'évaluation
 
 - 90% des cas de test passent.

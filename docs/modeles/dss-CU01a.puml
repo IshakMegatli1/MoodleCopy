@@ -1,0 +1,16 @@
+@startuml
+
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour un ajout de cours
+actor ":Enseignant" as c
+participant ":Système" as s
+c->s : getListeCours(courriel: String)
+c<<--s : affiche liste de groupe cours
+c->s : ajouterCours(e Enseignant ; cg CoursGroupe)
+c<<--s : affiche information du cours et liste d'étudiants dans le groupe-cours
+
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour afficher une liste de cours
+participant ":ControleurCours" as c
+->c : getListeCours(courriel: String)
+note right : selon Contrôleur
+participant ":SGB" as j
+c->j : getListeCours(courriel: String)
+note right : selon Expert
+c<--j : L = getList(courriel)
+<--c : return L
+
+@enduml

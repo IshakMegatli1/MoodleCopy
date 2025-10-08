@@ -1,0 +1,10 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour sélectionner un groupe cours
+participant ":ControleurCours" as c
+    ->c : ajouterCours(e Enseignant ; cg CoursGroupe )
+    note right : selon Contrôleur
+    <--c : return nouvelle liste
+
+@enduml

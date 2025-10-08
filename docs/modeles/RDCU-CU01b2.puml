@@ -1,0 +1,10 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour afficher l'information d'un cours
+participant ":ControleurCours" as c
+    ->c : creerBoiteCours(c: Cours)
+    note right : selon Contrôleur
+    <--c : return boite cours
+
+@enduml
