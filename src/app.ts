@@ -14,6 +14,7 @@ import { jeuRoutes } from './routes/jeuRouter';
 import { RouteurEnseignant } from './routes/routeurEnseignant';
 import { RouteurCours } from './routes/routeurCours';
 import { RouteurEtudiant } from './routes/routeurEtudiant';
+import { RouteurQuestions } from './routes/routeurQuestions';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -142,6 +143,12 @@ class App {
     this.expressApp.use('/api/v1/enseignant', enseignantRoutes.router);
     this.expressApp.use('/api/v1/cours', routeurCours.router);
     this.expressApp.use('/api/v1/etudiant', routeurEtudiant.router);
+
+
+    // Routes Questions (CU02a)
+    const routeurQuestions = new RouteurQuestions();
+    this.expressApp.use("/", routeurQuestions.router);
+
   }
 
   private handleErrors(error: any, req: any, res: any, next: NextFunction) {

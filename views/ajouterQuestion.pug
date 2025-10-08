@@ -1,0 +1,82 @@
+doctype html
+html(lang="fr")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Ajouter une question
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2em;
+      }
+      h1 {
+        color: #2c3e50;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        max-width: 500px;
+      }
+      label {
+        font-weight: bold;
+      }
+      input, textarea, select {
+        padding: 0.5em;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      button {
+        background-color: #2c3e50;
+        color: white;
+        border: none;
+        padding: 0.8em;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #34495e;
+      }
+      a {
+        margin-top: 1em;
+        display: inline-block;
+      }
+
+  body
+    h1 Ajouter une question au cours #{group_id}
+
+    if error
+      p(style="color:red") #{error}
+    if message
+      p(style="color:green") #{message}
+
+    form(action=`/cours/${group_id}/questions/add` method="post")
+      // Champ : titre
+      label(for="titre") Titre de la question
+      input(type="text" name="titre" id="titre" required)
+
+      // Champ : description (énoncé)
+      label(for="description") Énoncé de la question
+      textarea(name="description" id="description" rows="3" required)
+
+      // Champ : réponse vraie ou fausse
+      label(for="reponse") Réponse correcte ?
+      select(name="reponse" id="reponse" required)
+        option(value="true") Vrai
+        option(value="false") Faux
+
+      // Champ : texte pour réponse vraie
+      label(for="texteVrai") Texte si la réponse est correcte
+      input(type="text" name="texteVrai" id="texteVrai" placeholder="Par défaut : la réponse est correcte!")
+
+      // Champ : texte pour réponse fausse
+      label(for="texteFaux") Texte si la réponse est fausse
+      input(type="text" name="texteFaux" id="texteFaux" placeholder="Par défaut : la réponse est fausse!")
+
+      // Champ : catégorie
+      label(for="categorie") Catégorie
+      input(type="text" name="categorie" id="categorie" placeholder="Ex: introduction, logique, UML...")
+
+      // Boutons
+      button(type="submit") Ajouter la question
+      a(href=`/cours/${group_id}/gestionQuestions`) ← Retour à la gestion des questions
