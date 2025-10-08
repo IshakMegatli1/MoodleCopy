@@ -1,5 +1,6 @@
 import { Enseignant } from './enseignant';
 import { Etudiant } from './etudiant';
+import { Question } from './question';
 
 export class CoursGroupe {
 	private _group_id: string;
@@ -9,7 +10,8 @@ export class CoursGroupe {
 	private _mode: string;
 	private _local: string;
 	private _teacher_id: string;
-	private _listeEtudiants: Map<String, Etudiant>;
+	private _listeEtudiants: Map<string, Etudiant>;
+	private _questions: Map<string, Question>;
 
 	constructor(
 		group_id: string,
@@ -19,7 +21,8 @@ export class CoursGroupe {
 		mode: string,
 		local: string,
 		teacher_id: string,
-		listeEtudiants?: Map<String, Etudiant>
+		listeEtudiants?: Map<string, Etudiant>,
+		questions?: Map<string, Question>
 	) {
 		this._group_id = group_id;
 		this._day = day;
@@ -28,7 +31,8 @@ export class CoursGroupe {
 		this._mode = mode;
 		this._local = local;
 		this._teacher_id = teacher_id;
-		this._listeEtudiants = listeEtudiants || new Map<String, Etudiant>();
+		this._listeEtudiants = listeEtudiants || new Map<string, Etudiant>();
+		this._questions = questions || new Map<string, Question>();
 	}
 
 	get group_id(): string {
@@ -83,11 +87,30 @@ export class CoursGroupe {
 	get listeEtudiants(): Map<String, Etudiant> {
 		return this._listeEtudiants;
 	}
-	set listeEtudiants(value: Map<String, Etudiant>) {
+	set listeEtudiants(value: Map<string, Etudiant>) {
 		this._listeEtudiants = value;
 	}
 
 	ajouterEtudiant(etudiant: Etudiant) {
 		this._listeEtudiants.set(etudiant.id, etudiant)
 	}
+
+
+	// Méthodes pour les questions
+	public getQuestions(): Array<Question> {
+        return Array.from(this._questions.values());
+    }
+
+    public getQuestion(titre: string): Question {
+        console.log("questions", this._questions);
+        return this._questions.get(titre);
+    }
+
+    public addQuestion(question: Question): void {
+        this._questions.set(question.titre, question);
+    }
+
+    public isQuestionDuplicated(titre: string): boolean {
+        return this._questions.get(titre) !== undefined;
+    }
 }
