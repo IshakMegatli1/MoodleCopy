@@ -1,0 +1,26 @@
+html
+  include includes/head.pug
+  body
+    +navbar("SGA – Questions du cours", user)
+
+    .container.mt-5
+      .text-center.mb-4
+        h1.mb-2 Gestion des questions
+        h4.text-muted Cours : #{group_id}
+
+      if questions && questions.length
+        ul.list-group.mb-4
+          each q in questions
+            li.list-group-item
+              strong= q.nom
+              |  — #{q.description}
+              br
+              small.text-muted Vérité : #{q.reponse ? 'Vrai' : 'Faux'}
+      else
+        p.text-muted.mb-4 Aucune question pour ce cours.
+
+      // ---- Boutons d'action ----
+      .d-flex.justify-content-center.gap-3.mt-4
+        a.btn.btn-secondary(href="/mesCours") ⬅️ Page précédente
+        a.btn.btn-primary(href=`/cours/${group_id}/questions/add`) ➕ Ajouter question
+        a.btn.btn-danger(href=`/cours/${group_id}/questions/delete`) 🗑️ Supprimer question

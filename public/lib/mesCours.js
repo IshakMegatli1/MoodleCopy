@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
     box.style.justifyContent = 'space-between';
     box.style.gap = '1rem';
     box.style.margin = '1.2rem auto';
-    box.style.maxWidth = '420px';
-    box.style.width = '100%';
+    box.style.maxWidth = 'fit-content';  // ✅ la boîte s’élargit selon le contenu
+    box.style.width = 'auto';            // ✅ ne force plus à 100%
     box.style.minWidth = '260px';
     box.style.padding = '0.7rem 1.2rem';
     box.style.border = '1.5px solid #007bff';
@@ -46,6 +46,12 @@ document.addEventListener('DOMContentLoaded', function () {
     label.style.flex = '1';
     label.style.textAlign = 'left';
 
+    // Groupe de boutons à droite
+    const actions = document.createElement('div');
+    actions.style.display = 'flex';
+    actions.style.alignItems = 'center';
+    actions.style.gap = '0.5rem';
+
     const btnInfos = document.createElement('button');
     btnInfos.textContent = 'Informations';
     btnInfos.className = 'btn btn-primary btn-sm';
@@ -59,9 +65,24 @@ document.addEventListener('DOMContentLoaded', function () {
     btnSupprimer.style.fontSize = '0.95rem';
     btnSupprimer.style.padding = '0.3rem 1.1rem';
 
+    // Bouton Gestion questions (remplacé par un <a> pour ouvrir la page serveur)
+    const linkManageQuestions = document.createElement('a');
+    linkManageQuestions.href = `/cours/${encodeURIComponent(cours.group_id)}/gestionQuestions`;
+    linkManageQuestions.className = 'btn btn-primary btn-sm';
+    linkManageQuestions.textContent = 'Gestion questions';
+    linkManageQuestions.style.fontSize = '0.95rem';
+    linkManageQuestions.style.padding = '0.3rem 1.1rem';
+
+    // box.appendChild(label);
+    // box.appendChild(btnInfos);
+    // box.appendChild(btnSupprimer);
+
+    // Ordre d’affichage
     box.appendChild(label);
-    box.appendChild(btnInfos);
-    box.appendChild(btnSupprimer);
+    actions.appendChild(btnInfos);
+    actions.appendChild(linkManageQuestions);
+    actions.appendChild(btnSupprimer);
+    box.appendChild(actions);
 
     btnSupprimer.addEventListener('click', function () {
       if (!confirm('Voulez-vous vraiment supprimer ce cours ?')) return;
