@@ -62,7 +62,7 @@ export class RouteurQuestions {
   // GET /cours/:group_id/questions/add
   private afficherFormAjout(req: Request, res: Response) {
     const { group_id } = req.params;
-    res.render('question-add', {
+    res.render('ajouterQuestion', {
       user: req.session?.user ?? { isAnonymous: false },
       group_id,
     });
