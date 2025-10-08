@@ -24,3 +24,19 @@ html
         a.btn.btn-secondary(href="/mesCours") ⬅️ Page précédente
         a.btn.btn-primary(href=`/cours/${group_id}/questions/add`) ➕ Ajouter question
         //- a.btn.btn-danger(href=`/cours/${group_id}/questions/delete`) 🗑️ Supprimer question
+
+// --- Toast de confirmation / erreur ---
+if message
+  div#toast-message.alert.alert-success(style="position:fixed;bottom:1rem;right:1rem;z-index:1050;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);")
+    strong ✅ #{message}
+if error
+  div#toast-message.alert.alert-danger(style="position:fixed;bottom:1rem;right:1rem;z-index:1050;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);")
+    strong ❌ #{error}
+
+script.
+  setTimeout(() => {
+    const el = document.getElementById('toast-message');
+    if (el) el.remove();
+  }, 4000);
+
+
