@@ -12,7 +12,7 @@ html
         ul.list-group.mb-4
           each q in questions
             li.list-group-item
-              strong= q.nom
+              strong= q.titre
               |  — #{q.description}
               br
               small.text-muted Vérité : #{q.reponse ? 'Vrai' : 'Faux'}
@@ -38,5 +38,6 @@ script.
     const el = document.getElementById('toast-message');
     if (el) el.remove();
   }, 4000);
+
 
 
