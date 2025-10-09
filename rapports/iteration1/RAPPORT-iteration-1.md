@@ -60,6 +60,7 @@ Assurez-vous d'utiliser toujours le même compte GitHub pour accéder à ce proj
 ![dss-CU01a](dss-CU01a.png)
 ![alt text](dss-CU01b.png)
 ![alt text](dss-CU01c.png)
+![alt text](dss-CU02a.png)
 ## Contrats
 
 > Si vous avez choisi un cas d'utilisation nécessitant un contrat, il faut le mettre dans cette section.
@@ -105,6 +106,20 @@ Post Conditions :
 
 -Le cours courant a été supprimé à la liste de cours de l'enseignant courant
 ________________________________________________________________________
+CU02a-ajouterQuestion
+Opération : addQuestion(q: Question)
+
+Post Conditions :
+
+-La question a été associé à liste de question du cours actuel
+________________________________________________________________________
+CU02a-getQuestions
+Opération : getQuestions(lq: ListeQuestions)
+
+Post Conditions :
+
+-L'enseignant est assocée à la liste de question qui est dans le cours.
+________________________________________________________________________
 
 ## Réalisation de cas d'utilisation (RDCU)
 
@@ -117,6 +132,8 @@ ________________________________________________________________________
 ![alt text](RDCU-CU01b1.png)
 ![alt text](RDCU-CU01b2.png)
 ![alt text](RDCU-CU01c1.png)
+![alt text](RDCU-CU02a-ajouterQuestion.png)
+![alt text](RDCU-CU02a-getQuestions.png)
 
 ## Diagramme de classe logicielle (DCL)
 

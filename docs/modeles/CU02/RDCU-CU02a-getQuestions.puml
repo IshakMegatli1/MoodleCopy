@@ -2,7 +2,7 @@
 skinparam sequenceMessageAlign center
 hide footbox
 
-title RDCU pour getQuestions()
+title RDCU: CU02a - récupérer les Questions
 
 participant ":RouteurQuestions" as rq
 participant ": Map<group_id: string, List<Question>>" as qmap

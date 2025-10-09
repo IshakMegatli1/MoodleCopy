@@ -1,7 +1,7 @@
 @startuml
 skinparam sequenceMessageAlign center
 hide footbox
-title RDCU - CU02a Ajouter question (sans acteur)
+title RDCU: CU02a - Ajouter une question
 
 participant ":RouteurQuestions" as RQ
 participant ":Map<group_id, List<Question>>" as STORE
