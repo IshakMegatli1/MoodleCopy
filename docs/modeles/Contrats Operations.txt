@@ -37,3 +37,16 @@ Post Conditions :
 -Le cours courant a été supprimé à la liste de cours de l'enseignant courant
 ________________________________________________________________________
 
+Opération : addQuestion(q: Question)
+
+Post Conditions :
+
+-La question a été associé à liste de question du cours actuel
+________________________________________________________________________
+
+Opération : getQuestions(lq: ListeQuestions)
+
+Post Conditions :
+
+-L'enseignant est assocée à la liste de question qui est dans le cours.
+________________________________________________________________________
