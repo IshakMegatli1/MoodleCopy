@@ -1,0 +1,22 @@
+@startuml
+
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS: CU02a - Ajouter question
+actor ":Enseignant" as c
+participant ":Système" as s
+c->s : getQuestions()
+c<<--s : La liste des questions du cours
+loop tant qu'il y a des question à ajouter
+    c->s : addQuestion(titre: String, description: String, reponse: Boolean, texteVrai: String, texteFaux: String, categorie: String)
+    alt si on tente d'ajouter une question avec titre dupliqué
+        c<<--s : Message d'erreur: Le titre de la question n’est pas unique pour ce cours
+    end
+    c<<--s : Message de confirmation: Question ajoutée et associée à la banque du cours
+end
+
+
+@enduml

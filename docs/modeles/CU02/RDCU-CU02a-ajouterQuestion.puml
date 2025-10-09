@@ -1,0 +1,49 @@
+@startuml
+skinparam sequenceMessageAlign center
+hide footbox
+title RDCU: CU02a - Ajouter une question
+
+participant ":RouteurQuestions" as RQ
+participant ":Map<group_id, List<Question>>" as STORE
+participant "Question" as Q
+
+' Préconditions (CU01b déjà fait, group_id dispo)
+note over RQ
+  Préconditions :
+  - Enseignant authentifié
+  - Cours récupéré (CU01b) → group_id disponible
+end note
+
+-> RQ : ajouterQuestion(titre, description,\nreponse, texteVrai, texteFaux, categorie, group_id)
+activate RQ
+
+RQ -> STORE : get(group_id)
+STORE --> RQ : liste (ou null)
+RQ -> RQ : if (liste == null) then liste = []
+
+RQ -> RQ : existe = titre déjà présent dans liste ?
+
+alt existe == true
+  <-- RQ: render gestionQuestions(liste, err="Le titre de la question n'est pas unique")
+  note left
+    Postcondition (échec) :
+    - Aucune création
+    - Message d'erreur affiché
+  end note
+else
+  create Q
+  RQ -> Q : new Question(titre, description,\nreponse, texteVrai, texteFaux, categorie, group_id)
+
+  RQ -> STORE : set(group_id, liste + Q)
+
+  <-- RQ: render gestionQuestions(liste+Q, msg="Question ajoutée avec succès")
+  note left
+    Postconditions (succès) :
+    - Nouvelle question créée
+    - Associée uniquement au cours (clé = group_id)
+    - Liste réaffichée avec message de succès
+  end note
+end
+
+deactivate RQ
+@enduml

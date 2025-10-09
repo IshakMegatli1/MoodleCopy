@@ -53,22 +53,34 @@ Les éléments de travail suivants seront abordés dans cette itération:
 ### Questions d'évaluation
 Regardez votre diagramme TPLANT et répondez aux questions suivantes?
 1. Est-ce qu'il y a un décalage de représentation?
+   Dans notre situation, non, parce que notre diagramme MDD et le diagramme généré par TPLANT possèdent les mêmes classes et attributs. 
   - Est-ce que tous les noms de classe ont un rapport avec le domaine?
+   Oui, les noms de classes sont cohérents avec le domaine, à l’exception de certains contrôleurs dont les noms sont trop explicites (par exemple : ControleurEnseignant, etc.).
+
 2. Est-ce que l'architecture en couche est respectée?
    - Est-ce que les contrôleurs GRASP sont bien identifiés?
+   Oui, puisque l'entièreté de nos contrôleurs sont biens identifiés dans nos différents RDCU et dans le MDD.
    - Est-ce que les paramètres des opérations système sont tous de type primitif ou sont des objets de paramètres de type primitif?
+   Oui, car même les objets qui ne sont pas de type primitif sont seulement constitué d'attributs de type primitif (ex: CoursGroupe).
    - Est-ce que vous avez un fichier de route par contrôleur?
+   Oui, chaque contrôleur possède son propre fichier de route (par exemple: ControleurEnseignant --> routeurEnseignant).
+         
 3. Évaluer votre conception par rapport aux GRASP "forte cohésion" et "faible couplage"
    - Avez-vous des classes qui sont couplées avec "beaucoup" d'autres classes?
+   Non, toutes les classes ont une ou deux associations au maximum.
    - Avez-vous des classes qui ont beaucoup de responsabilités (d'opérations)?
-     - Faite surtout attention aux responsabilités que vous avez données à vos contrôleurs.
+   Non, toutes les classes principales (principalement les contrôleurs) ont leurs propres responsabilités logiques, elles ne font pas de choses qui ne leur devrait pas être attribué logiquement. 
+
 4. Y a-t-il des problèmes de Code smell à identifier avec l'aide de TPLANT
    1. Mysterious name relié au décalage des représentations ou pas
-      1. Identifier le renommage (réusinage) éventuel de classe et/ou méthodes
+      1. Identifier le renommage (réusinage) éventuel de classe et/ou méthodes.
+      Oui, tous les contrôleurs devraient avoir un nom différent qui est mieux associé à la logique du système. Pour l'instant, nous n'avons pas clairement de nom ou de classe dans le MDD qui pourrait prendre ce rôle, c'est un changement éventuel que l'on souhaite faire.
    2. Large class (cohésion)
-      1. Proposer d'appliquer le réusinage Extract class / GRAPS fabrication pure 
+      1. Proposer d'appliquer le réusinage Extract class / GRAPS fabrication pure. 
+      Pas applicable dans notre situation.
    3. Trop de paramètres (4+)
-      1. Proposer d'appliquer le réusinage Objet de paramètre
+      1. Proposer d'appliquer le réusinage Objet de paramètre.
+      Les classes Question et CoursGroupe sont les classes qui possèdent le plus de paramètres. Par contre, pour ces deux classes, l'entièreté des paramètres sont nécessaires pour répondre aux besoins des cas d'utlisation.
    
 ### Évaluation par rapport aux objectifs
 
@@ -79,25 +91,28 @@ Regardez votre diagramme TPLANT et répondez aux questions suivantes?
 - Présenter une démonstration technique.
   - Le CU06 a été convaincant pour l'auxiliaire d'enseignement, mais il a trouvé que les tests pour le CU07 n'étaient pas assez étoffés. On doit corriger ça à la prochaine itération si on veut que le CU07 compte pour l'implémentation finale.
 
+- Présenter une démonstration technique de CU01 avec tests
+   - Le CU01 a été convaincant pour l’auxiliaire, puisque toutes ses sous-fonctionnalités (a, b et c) ont été complétées. Toutefois, il semblerait que la couverture de nos tests ne soit pas suffisamment élevée pour ce cas d’utilisation.
+
+ - Présenter une démonstration technique de CU02a (question vrai ou faux) avec tests.
+   - En ce qui concerne le CU02a, la démonstration a bel et bien été convaicante pour l'auxiliaire. 
+
 ### Éléments de travail: prévus vs réalisés
 
-> Résumez si tous les éléments de travail prévus dans l'itération ont été abordés, et des éléments de travail qui ont été reportés ou ajoutés.
+Tous les éléments du CU1 et CU2a ont été complétés, mais il faut retravailler le code.
 
-Tous les éléments ont été complétés, mais il faut étoffer les tests du CU07:
-
-- CU07 - test et implémentation assignés à Hélène
+- CU01 - réoptimiser le code - Philippe
+- CU01 - refaire les tests - Daniel 
 
 ### Évaluation par rapport aux résultats selon les critères d'évaluation
 
-> Documentez si vous avez satisfait les critères d'évaluation précisés dans le plan d'itération. Cela pourrait inclure des informations telles que «&nbsp;Démo pour le département X a été bien accueilli, avec quelques préoccupations soulevées autour de la convivialité&nbsp;», ou, «&nbsp;495 cas de tests ont été automatisés avec un taux de réussite de 98&nbsp;%. 9 cas de test ont été reportés parce que les éléments de travail correspondants ont été reportés.&nbsp;»
-
-La solution a répondu à tous les critères, mais attention: il faut rajouter des cas de tests.
+La démonstration du CU1 et CU2a avec l'auxiliaire a été bien accueilli,  mais attention: il faut rajouter des cas de tests, puisque le coverage n'était pas assez élevé.
 
 ## Autres préoccupations et écarts
 
 > Documentez d'autres domaines qui ont été évalués, tels que la finance ou un type de programme, ainsi que la rétroaction des intervenants qui n'a pas été saisie ailleurs
 
-Nous avons discuté avec plusieurs professeurs pour comprendre le flux de travail de construction des devoirs à faire en ligne (CU06).
+Dans notre équipe, il n'y a aucune situation du genre qui est survenue. 
 
 ## Évaluation du travail d'équipe
 
@@ -105,12 +120,13 @@ Nous avons discuté avec plusieurs professeurs pour comprendre le flux de travai
 
 Selon les statistiques générées par `gitinspector` Pierre et Jérémie font 90 % de la programmation et les deux autres membres doivent contribuer plus. Voir le script contribution.sh dans le répertoire scripts du projet.
 
-Nous devons trouver un autre moyen de faire les commits (peut-être avec des branches et PR), car il y avait trop de merges difficiles de la documentation.
+Pour la première itération, puisque nous apprenions le fonctionnement de Git, GitInspector ne constitue pas un outil fiable. Toutefois, tous les membres de l’équipe ont contribué de manière significative au travail (analyse, conception, programmation, plan d’itération, rapport, etc.).
 
 ### Retrait d'un membre de l'équipe pour contribution non significative
 
 - C'est ici que vous mettez le nom de la personne ainsi que les raisons du retrait. Cette section doit nécessairement inclure une liste d'objectifs que cette personne doit respecter pour pouvoir s'assurer de faire partie de l'itération suivante. 
 
+Pas applicable dans notre situation.
 
 ---
 

@@ -1,0 +1,112 @@
+@startuml
+class Etudiant {
+    -_id: string
+    -_nom: string
+    -_prenom: string
+    +id: string
+    +nom: string
+    +prenom: string
+}
+class Question {
+    +titre: string
+    +description: string
+    +reponse: boolean
+    +texteVrai: string
+    +texteFaux: string
+    +categorie: string
+    +idGroupe: string
+    +getTitre(): string
+    +getDescription(): string
+    +getReponse(): boolean
+    +getTexteVrai(): string
+    +getTexteFaux(): string
+    +getCategorie(): string
+}
+class CoursGroupe {
+    -_group_id: string
+    -_day: string
+    -_hours: string
+    -_activity: string
+    -_mode: string
+    -_local: string
+    -_teacher_id: string
+    -_listeEtudiants: Map<string, Etudiant>
+    -_questions: Map<string, Question>
+    +group_id: string
+    +group_id: string
+    +day: string
+    +day: string
+    +hours: string
+    +hours: string
+    +activity: string
+    +activity: string
+    +mode: string
+    +mode: string
+    +local: string
+    +local: string
+    +teacher_id: string
+    +teacher_id: string
+    +listeEtudiants: Map<String, Etudiant>
+    +listeEtudiants: Map<String, Etudiant>
+    +ajouterEtudiant(etudiant: Etudiant): void
+    +getQuestions(): Question[]
+    +getQuestion(titre: string): Question
+    +addQuestion(question: Question): void
+    +isQuestionDuplicated(titre: string): boolean
+}
+class Enseignant {
+    -_prenom: string
+    -_nom: string
+    -_id: string
+    -_token: string
+    -_listeCours: Map<String, CoursGroupe>
+    +prenom: string
+    +prenom: string
+    +nom: string
+    +nom: string
+    +id: string
+    +id: string
+    +token: string
+    +token: string
+    +listeCours: Map<String, CoursGroupe>
+    +listeCours: Map<String, CoursGroupe>
+}
+class ControleurCours {
+    +demanderListe(enseignant: Enseignant): Promise<Map<String, CoursGroupe>>
+    +ajouterCours(enseignant: Enseignant, courseData: { group_id: string; day: string; hours: string; activity: string; mode: string; local: string; teacher_id: string; }): CoursGroupe
+}
+class ControleurEnseignant {
+    +authentifier(email: string, password: string): Promise<string>
+    +getEnseignant(token: string): Promise<Enseignant>
+}
+class ControleurEtudiant {
+    +demanderListe(token: string, coursId: string): Promise<Map<String, Etudiant>>
+}
+class ControleurQuestion {
+    -_coursMap: Map<string, CoursGroupe>
+    -getCoursOrThrow(idGroupe: string): CoursGroupe
+    +ajouterQuestion(idGroupe: string, titre: string, description: string, reponse: boolean, texteVrai: string, texteFaux: string, categorie: string): Promise<Question>
+    +recupererQuestion(idGroupe: string, titre: string): Question
+    +getQuestions(idGroupe: string): Promise<Question[]>
+    +modifierQuestion(nom: string, description: string, reponse: boolean, texteVrai: string, texteFaux: string, categorie: string, idGroupe: string, ancienNom: string): Promise<Question>
+    +supprimerQuestion(idGroupe: string, titre: string): Promise<Question[]>
+}
+
+class Université {
+    -listeEtudiants: Map<String, Etudiant>
+    -listeEnseignants: Map<String, Enseignant>
+    +getListeEtudiants(): Map<String, Etudiant>
+    +getListeEnseignants(): Map<String, Enseignant>
+    +ajouterEtudiant(etudiant: Etudiant): void
+    +ajouterEnseignant(enseignant: Enseignant): void
+}
+
+Enseignant "1" -- "*" CoursGroupe : Enseigne > 
+Etudiant "1" -- "*" CoursGroupe : Suit un >
+Université "1" -- "*" Etudiant : inscrit dans <
+Université "1" -- "*" Enseignant : travail dans <
+ControleurEtudiant "1" -- "*" Etudiant : gere >
+ControleurEnseignant "1" -- "*" Enseignant : gere >
+ControleurCours "1" -- "*" CoursGroupe : gere >
+
+@enduml

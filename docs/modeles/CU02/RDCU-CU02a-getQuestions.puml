@@ -1,0 +1,20 @@
+@startuml
+skinparam sequenceMessageAlign center
+hide footbox
+
+title RDCU: CU02a - récupérer les Questions
+
+participant ":RouteurQuestions" as rq
+participant ": Map<group_id: string, List<Question>>" as qmap
+
+-> rq : getQuestions(): List<Question>
+note right: L'acteur (professeur) envoie une requête pour afficher la page de gestion des questions
+
+rq -> qmap : get(group_id): List<Question>
+note right: Accès direct à la Map
+qmap --> rq : questions: List<Question>
+
+<-- rq : res.render("gestionQuestions", {questions})
+note right: Le routeur renvoie la liste des questions
+
+@enduml 
