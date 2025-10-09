@@ -5,15 +5,18 @@ skinparam defaultfontname Verdana
 skinparam sequence {
     MessageAlign center
 }
-title DSS gérer les questionnaires
+title DSS: CU02a - Ajouter question
 actor ":Enseignant" as c
 participant ":Système" as s
-c->s : manageQuestions()
-c<<--s : affiche toute les questions du cours
-c->s : Sélectionne l'option pour ajouter une question 
-c->s : addQuestion(.....)
-c<<--s : affiche la question
-c<<--s : affiche toutes les questions reliés au cours
-c<<--s : affiche un message de confirmation d'ajout de la question
+c->s : getQuestions()
+c<<--s : La liste des questions du cours
+loop tant qu'il y a des question à ajouter
+    c->s : addQuestion(titre: String, description: String, reponse: Boolean, texteVrai: String, texteFaux: String, categorie: String)
+    alt si on tente d'ajouter une question avec titre dupliqué
+        c<<--s : Message d'erreur: Le titre de la question n’est pas unique pour ce cours
+    end
+    c<<--s : Message de confirmation: Question ajoutée et associée à la banque du cours
+end
+
 
 @enduml
