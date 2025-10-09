@@ -55,7 +55,7 @@ Regardez votre diagramme TPLANT et répondez aux questions suivantes?
 1. Est-ce qu'il y a un décalage de représentation?
    Dans notre situation, non, parce que notre diagramme MDD et le diagramme généré par TPLANT possèdent les mêmes classes et attributs. 
   - Est-ce que tous les noms de classe ont un rapport avec le domaine?
-   Oui, les noms de classes ont un rapport avec le domaine sauf nos contrôleurs qui possèdent des noms trop explicites (par exemple: ControleurEnseignant, etc.).
+   Oui, les noms de classes sont cohérents avec le domaine, à l’exception de certains contrôleurs dont les noms sont trop explicites (par exemple : ControleurEnseignant, etc.).
 
 2. Est-ce que l'architecture en couche est respectée?
    - Est-ce que les contrôleurs GRASP sont bien identifiés?
@@ -74,7 +74,7 @@ Regardez votre diagramme TPLANT et répondez aux questions suivantes?
 4. Y a-t-il des problèmes de Code smell à identifier avec l'aide de TPLANT
    1. Mysterious name relié au décalage des représentations ou pas
       1. Identifier le renommage (réusinage) éventuel de classe et/ou méthodes.
-      Oui, tout les contrôleurs devraient avoir un nom différent qui est mieux associé à la logique du système. Pour l'instant, nous n'avons pas clairement de nom ou de classe dans le MDD qui pourrait prendre ce rôle, c'est un changement éventuel que l'on souhaite faire.
+      Oui, tous les contrôleurs devraient avoir un nom différent qui est mieux associé à la logique du système. Pour l'instant, nous n'avons pas clairement de nom ou de classe dans le MDD qui pourrait prendre ce rôle, c'est un changement éventuel que l'on souhaite faire.
    2. Large class (cohésion)
       1. Proposer d'appliquer le réusinage Extract class / GRAPS fabrication pure. 
       Pas applicable dans notre situation.
@@ -90,6 +90,12 @@ Regardez votre diagramme TPLANT et répondez aux questions suivantes?
   - La rétroaction de l'auxiliaire d'enseignement a été positive. Bon travail l'équipe!
 - Présenter une démonstration technique.
   - Le CU06 a été convaincant pour l'auxiliaire d'enseignement, mais il a trouvé que les tests pour le CU07 n'étaient pas assez étoffés. On doit corriger ça à la prochaine itération si on veut que le CU07 compte pour l'implémentation finale.
+
+- Présenter une démonstration technique de CU01 avec tests
+   - Le CU01 a été convaincant pour l’auxiliaire, puisque toutes ses sous-fonctionnalités (a, b et c) ont été complétées. Toutefois, il semblerait que la couverture de nos tests ne soit pas suffisamment élevée pour ce cas d’utilisation.
+
+ - Présenter une démonstration technique de CU02a (question vrai ou faux) avec tests.
+   - En ce qui concerne le CU02a, la démonstration a bel et bien été convaicante pour l'auxiliaire. 
 
 ### Éléments de travail: prévus vs réalisés
 
@@ -114,7 +120,7 @@ Dans notre équipe, il n'y a aucune situation du genre qui est survenue.
 
 Selon les statistiques générées par `gitinspector` Pierre et Jérémie font 90 % de la programmation et les deux autres membres doivent contribuer plus. Voir le script contribution.sh dans le répertoire scripts du projet.
 
-Pour la première itération, puisque nous apprenions le fonctionnement de Git, gitinspector ne serait pas un outil fiable. Toutefois, tout les membres de l'équipe ont contribué significativement au travail (analyse, conception, programmation, plan d'itération, rapport, etc.)
+Pour la première itération, puisque nous apprenions le fonctionnement de Git, GitInspector ne constitue pas un outil fiable. Toutefois, tous les membres de l’équipe ont contribué de manière significative au travail (analyse, conception, programmation, plan d’itération, rapport, etc.).
 
 ### Retrait d'un membre de l'équipe pour contribution non significative
 
