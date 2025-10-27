@@ -2,25 +2,30 @@
 
 skinparam sequenceMessageAlign center
 hide footbox
-title DSS : CU05a - Ajouter un questionnaire
+title DSS : CU05a - Ajouter questionnaire
 
 actor "Enseignant" as e
 participant "Système" as s
 
 e -> s : getQuestionnaires(idGroupe: string)
+
 s --> e : Afficher la liste de questionnaires du cours
 
 e -> s : addQuestionnaire(nom: string, description: string, actif: boolean)
+
 s --> e : Affiche un message de confirmation
+
 s --> e : Affiche la liste de catégories de questions
 
-
 e -> s : selectCategorie(categorie: string)
+
 s --> e : Affiche les questions de la catégorie et le nombre de questionnaire auxquels elles ont été ajoutées
 
-
 loop Tant que l'enseignant n'a pas terminé
+
 e -> s : addQuestions(questions: string)
+
 s --> e : Afficher message de confirmation de sauvegarde du questionnaire
+
 end
 @enduml
