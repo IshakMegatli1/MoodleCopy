@@ -15,7 +15,7 @@ note over RQ
 end note
 
 -> RQ : addQuestionnaire(nom, description, actif, group_id)
-activate RQ
+
 
 RQ -> STORE : get(group_id)
 STORE --> RQ : liste (ou null)
@@ -45,5 +45,5 @@ else
   end note
 end
 
-deactivate RQ
+
 @enduml
