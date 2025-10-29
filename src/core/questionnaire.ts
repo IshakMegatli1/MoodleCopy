@@ -5,7 +5,6 @@ export class Questionnaire {
     description: string;
     actif: boolean;
     questions: Question[];
-    _aCommence: boolean;
     idCours: string;
 
     constructor(
