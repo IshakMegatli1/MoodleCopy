@@ -1,0 +1,51 @@
+html
+  include includes/head.pug
+  body
+    +navbar("SGA – Questionnaires du cours", user)
+
+    .container.mt-5
+      .text-center.mb-4
+        h1.mb-2 Gestion des questionnaires
+        h4.text-muted Cours : #{group_id}
+
+      // --- Liste des questionnaires ---
+      if questionnaires && questionnaires.length
+        ul.list-group.mb-4
+          each qn in questionnaires
+            li.list-group-item.d-flex.justify-content-between.align-items-start
+              .me-3
+                strong= qn.nom
+                if qn.description
+                  div.text-muted.mt-1(style="max-width: 60ch;")= qn.description
+                // Compteur de questions
+                - const nbQ = (typeof qn.getNombreQuestions === 'function') ? qn.getNombreQuestions() : (qn.questions ? qn.questions.length : 0);
+                small.text-muted.mt-1(d="block") #{nbQ} #{nbQ > 1 ? 'questions' : 'question'}
+              .text-end
+                // État (actif/inactif)
+                if qn.actif
+                  span.badge.bg-success.me-2 Actif
+                else
+                  span.badge.bg-secondary.me-2 Inactif
+                // Action: aller gérer (catégories → ajout de questions)
+                a.btn.btn-outline-primary.btn-sm(href=`/cours/${group_id}/questionnaires/${encodeURIComponent(qn.nom)}/categories`) Gérer (catégories)
+      else
+        p.text-muted.mb-4 Aucun questionnaire pour ce cours.
+
+      // ---- Boutons d'action globaux ----
+      .d-flex.justify-content-center.gap-3.mt-4
+        a.btn.btn-secondary(href="/mesCours") ⬅️ Page précédente
+        a.btn.btn-primary(href=`/cours/${group_id}/questionnaires/add`) ➕ Créer un questionnaire
+
+// --- Toast de confirmation / erreur ---
+if message
+  div#toast-message.alert.alert-success(style="position:fixed;bottom:1rem;right:1rem;z-index:1050;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);")
+    strong ✅ #{message}
+if error
+  div#toast-message.alert.alert-danger(style="position:fixed;bottom:1rem;right:1rem;z-index:1050;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);")
+    strong ❌ #{error}
+
+script.
+  setTimeout(() => {
+    const el = document.getElementById('toast-message');
+    if (el) el.remove();
+  }, 4000);

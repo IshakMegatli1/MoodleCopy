@@ -15,6 +15,8 @@ import { RouteurEnseignant } from './routes/routeurEnseignant';
 import { RouteurCours } from './routes/routeurCours';
 import { RouteurEtudiant } from './routes/routeurEtudiant';
 import { RouteurQuestions } from './routes/routeurQuestions';
+import { RouteurQuestionnaire } from './routes/routeurQuestionnaire';
+import { CoursGroupe } from './core/coursGroupe'; // <-- ✅ AJOUT
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -75,7 +77,7 @@ class App {
       res.render('signin', {
         title: `${titreBase}`
       });
-  });
+    });
 
     // Route pour classement (stats)
     router.get('/stats', (req, res, next) => {
@@ -135,8 +137,6 @@ class App {
 
     this.expressApp.use('/api/v1/jeu', jeuRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
 
-
-    
     const enseignantRoutes = new RouteurEnseignant();
     const routeurCours = new RouteurCours();
     const routeurEtudiant = new RouteurEtudiant();
@@ -144,17 +144,39 @@ class App {
     this.expressApp.use('/api/v1/cours', routeurCours.router);
     this.expressApp.use('/api/v1/etudiant', routeurEtudiant.router);
 
-
     // Routes Questions (CU02a)
-    const routeurQuestions = new RouteurQuestions();
+    // const routeurQuestions = new RouteurQuestions();
+    // this.expressApp.use("/", routeurQuestions.router);
+
+    // ================================
+    // Routes Questionnaires (CU05a)
+    // ================================
+
+    // ✅ Map partagée des cours pour les questionnaires
+    const coursMap = new Map<string, CoursGroupe>(); // <-- ✅ AJOUT
+
+    const routeurQuestionnaires = new RouteurQuestionnaire(coursMap); // <-- ✅ utilise la map
+    this.expressApp.use("/", routeurQuestionnaires.router);           // <-- ✅ monté à la racine
+
+
+    const routeurQuestions = new RouteurQuestions(coursMap);
     this.expressApp.use("/", routeurQuestions.router);
-
   }
 
-  private handleErrors(error: any, req: any, res: any, next: NextFunction) {
-    req.flash('error', error.message);
-    res.status(error.code).json({ error: error.toString() });
-  }
+  private handleErrors(err: any, req: any, res: any, next: NextFunction) {
+  const status =
+    (typeof err?.status === 'number' && err.status) ||
+    (typeof err?.statusCode === 'number' && err.statusCode) ||
+    (typeof err?.code === 'number' && err.code) ||
+    500;
+
+  const message = err?.message || 'Internal Server Error';
+  if (res.headersSent) return next(err);
+
+  try { req.flash?.('error', message); } catch {}
+  res.status(status).json({ error: message, status });
+}
+
 }
 
 export default new App().expressApp;

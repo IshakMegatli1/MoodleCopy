@@ -1,0 +1,45 @@
+html
+  include includes/head.pug
+  body
+    +navbar("SGA – Ajouter des questions au questionnaire", user)
+
+    .container.mt-5
+      .text-center.mb-4
+        h1.mb-2 Questions de la catégorie
+        h4.text-muted Cours : #{group_id}
+        h5.text-muted Questionnaire : #{nomQuestionnaire}
+        h6.text-muted Catégorie : #{tag}
+
+      if error
+        .alert.alert-danger.text-center #{error}
+
+      if lignes && lignes.length
+        form(method="post" action=`/cours/${group_id}/questionnaires/${encodeURIComponent(nomQuestionnaire)}/categorie/${encodeURIComponent(tag)}/add`)
+          .table-responsive
+            table.table.table-hover
+              thead
+                tr
+                  th(style="width:3rem")
+                  th Titre
+                  th Catégorie
+                  th Utilisée
+              tbody
+                each l in lignes
+                  tr
+                    td
+                      input.form-check-input(type="checkbox" name="titres" value=l.titre)
+                    td= l.titre
+                    td= l.categorie || "(sans catégorie)"
+                    td
+                      span.badge.bg-secondary #{l.nbUtilisations} #{l.nbUtilisations > 1 ? 'fois' : 'fois'}
+
+          .d-flex.justify-content-center.gap-3.mt-4
+            button.btn.btn-primary(type="submit") 💾 Sauvegarder le questionnaire
+            a.btn.btn-secondary(href=`/cours/${group_id}/questionnaires/${encodeURIComponent(nomQuestionnaire)}/categories`) ⬅️ Retour aux catégories
+      else
+        .alert.alert-info.text-center
+          | Aucune question trouvée pour cette catégorie.
+        .d-flex.justify-content-center.gap-3.mt-4
+          a.btn.btn-secondary(href=`/cours/${group_id}/questionnaires/${encodeURIComponent(nomQuestionnaire)}/categories`) ⬅️ Retour aux catégories
+          a.btn.btn-outline-primary(href=`/cours/${group_id}/gestionQuestions`) ➕ Gérer les questions
+

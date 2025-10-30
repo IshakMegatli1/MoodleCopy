@@ -49,12 +49,33 @@ export class Questionnaire {
         return this.questions;
     }
 
+    // public ajouterQuestion(question: Question): void {
+    //     if (!question.estAssocie(this)) {
+    //         this.questions.push(question);
+    //         question.associerQuestionnaire(this);
+    //     }
+    // }
+
+    // public ajouterQuestion(question: Question): void {
+    //     const titre = question.titre?.trim().toLowerCase();
+    //     const existe = this.questions.some(q => q.titre?.trim().toLowerCase() === titre);
+    //     if (!existe) {
+    //         this.questions.push(question);
+    //         // Optionnel: appelle si dispo, mais ne dépend pas de ça
+    //         (question as any).associerQuestionnaire?.(this);
+    //     }
+    // }
+
     public ajouterQuestion(question: Question): void {
-        if (!question.estAssocie(this)) {
+        const titre = question.titre?.trim().toLowerCase();
+        const deja = this.questions.some(q => q.titre?.trim().toLowerCase() === titre);
+        if (!deja) {
             this.questions.push(question);
-            question.associerQuestionnaire(this);
+            // Optionnel: appelle si présent, mais NE PAS dépendre de cette API
+            (question as any).associerQuestionnaire?.(this);
         }
     }
+
 
     public retirerQuestion(titre: string): void {
         this.questions = this.questions.filter(q => q.titre !== titre);
