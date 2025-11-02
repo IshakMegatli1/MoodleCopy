@@ -94,6 +94,27 @@ export class SGB {
     return json.data as Array<{ group_id: string; student_id: string }>;
   }
   
+  // GET /student/login?email&password
+  static async authentifierEtudiant(email: string, password: string): Promise<{
+      message: string;
+      token: string;
+      user: { first_name: string; last_name: string; id: string };
+  }> {
+      const qs = new URLSearchParams({ email, password }).toString();
+      const r = await fetch(`${BASE}/student/login?${qs}`);
+      if (!r.ok) throw new Error(`SGB /student/login ${r.status}`);
+      return await r.json();
+  }
+
+  // GET /student/fromtoken?token -> {user} 
+static async getEtudiant(token: string): Promise<{
+    user: { first_name: string; last_name: string; id: string };
+}> {
+    const qs = new URLSearchParams({ token }).toString();
+    const r = await fetch(`${BASE}/student/fromtoken?${qs}`);  // Changement ici : ?token= au lieu de /:token
+    if (!r.ok) throw new Error(`SGB /student/fromtoken ${r.status}`);
+    return await r.json();
+}
 }
 
 
