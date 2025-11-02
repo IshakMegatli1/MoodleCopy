@@ -5,15 +5,7 @@ skinparam ArrowColor #gray
 
 hide empty members
 title Modèle du domaine
-
-together {
-
-  class Etudiant {
-    id : String
-    nom : String
-    prenom : String
-  }
-
+      
   class ControleurCours {
 
   }
@@ -26,6 +18,15 @@ together {
 
   }
 
+  class ControleurQuestion{
+
+  }
+
+  class ControleurQuestionnaire{
+
+  }
+  
+
   class Université {
     listeEtudiant : Map<String,Etudiant>
     listeEnseignant : Map<String,Enseignant>
@@ -37,8 +38,11 @@ together {
     liste : Map<String,Cours>
   }
 
-}
-
+  class Etudiant {
+    id : String
+    nom : String
+    prenom : String
+  }
 
   class CoursGroupe {
     groupID : String
@@ -49,14 +53,28 @@ together {
     local : String
     teacherID : String
     listeEtudiant : Map<String,Etudiant>
+    listeQuestionnaire : Map<String,Questionnaire>
+    listeQuestion : Map<String,Question>
     
   }
 
-  
-  
+  class Question {
+    titre : String
+    description : String
+    reponse : boolean
+    texteVrai : String
+    texteFaux : String
+    categorie : String
+    idGroupe : String
+  }
 
-
-
+  class Questionnaire {
+    nom : String
+    description : String
+    actif: boolean
+    listeQuestion : Map<String,Question>
+    idCoursGroupe : String
+  }
 
 ' associations
 
@@ -64,7 +82,12 @@ Enseignant "1" -- "*" CoursGroupe : Enseigne >
 Etudiant "1" -- "*" CoursGroupe : Suit un >
 Université "1" -- "*" Etudiant : inscrit dans <
 Université "1" -- "*" Enseignant : travail dans <
+Questionnaire "1" -- "*" Question : regroupe >
+CoursGroupe "1" -- "*" Questionnaire : propose >
+
 ControleurEtudiant "1" -- "*" Etudiant : gere >
 ControleurEnseignant "1" -- "*" Enseignant : gere >
 ControleurCours "1" -- "*" CoursGroupe : gere >
+ControleurQuestion "1" -- "*" Question : gere >
+ControleurQuestionnaire "1" -- "*" Questionnaire : gere >
 @enduml
