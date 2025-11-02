@@ -1,0 +1,21 @@
+@startuml
+
+skinparam sequenceMessageAlign center
+hide footbox
+title DSS : CU05b - Afficher questionnaire
+
+actor "Enseignant" as e
+participant "Système" as s
+
+e -> s : getQuestionnaires(idGroupe: string)
+
+s --> e : Afficher la liste de questionnaires du cours
+
+loop Tant que l'enseignant n'a pas terminé
+
+e -> s : recupererQuestionnaire(idGroupe: string, nom: string)
+
+s --> e : Afficher les détails du questionnaire sélectionné (nom, description, état, liste étudiants)
+
+end
+@enduml

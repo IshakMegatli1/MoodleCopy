@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour afficher les détails d’un questionnaire sélectionné
+
+participant ":ControleurQuestionnaire" as c
+-> c : recupererQuestionnaire(idGroupe: string, nom: string)
+note right
+selon Contrôleur
+Orchestre la logique d’application  
+et reçoit la requête provenant de l’interface.
+end note
+
+participant ":Map<String, Questionnaire>" as m
+c -> m : get(idGroupe, nom)
+note right 
+selon Expert  
+Connaît les classes du domaine  
+et sait comment récupérer les détails du questionnaire sélectionné.
+end note
+
+m --> c : q : Questionnaire
+note right : (les détails retournés : nom, description, état, liste étudiants)
+<-- c : return q
+
+@enduml
