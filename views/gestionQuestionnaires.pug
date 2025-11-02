@@ -26,8 +26,13 @@ html
                   span.badge.bg-success.me-2 Actif
                 else
                   span.badge.bg-secondary.me-2 Inactif
-                // Action: aller gérer (catégories → ajout de questions)
-                a.btn.btn-outline-primary.btn-sm(href=`/cours/${group_id}/questionnaires/${encodeURIComponent(qn.nom)}/categories`) Gérer (catégories)
+                // Actions: gérer et afficher étudiants (bouton ajouté)
+                .d-flex.flex-column.align-items-end
+                  a.btn.btn-outline-primary.btn-sm.mb-2(href=`/cours/${group_id}/questionnaires/${encodeURIComponent(qn.nom)}/categories`) Gérer (catégories)
+                  // Le bouton affiche la liste des étudiants du questionnaire (mêmes classes CSS que le bouton au-dessus)
+                  button.btn.btn-outline-primary.btn-sm.btn-show-students(type='button', data-gnom=qn.nom, data-group=group_id) Afficher étudiants
+              // Conteneur où la liste des étudiants sera injectée (initialement caché)
+              .students-list-container(data-qn-name=qn.nom, data-group-id=group_id, style='display:none; margin-top:0.5rem;')
       else
         p.text-muted.mb-4 Aucun questionnaire pour ce cours.
 
@@ -49,3 +54,6 @@ script.
     const el = document.getElementById('toast-message');
     if (el) el.remove();
   }, 4000);
+
+// Inclure le script qui gère l'affichage des étudiants par questionnaire
+script(src='/lib/gestionQuestionnaires.js')
