@@ -10,6 +10,12 @@ html
             input.form-control(name='email' type='text' placeholder='Courriel' required='')
           .form-group
             input.form-control(name='password' type='password' placeholder='Mot de passe' required='')
+
+          .form-group.mb-4.text-center
+            select#userType.form-select.form-select-lg.mx-auto(style="max-width: 300px;")
+              option(value='enseignant') 👨‍🏫 Enseignant
+              option(value='etudiant') 👨‍🎓 Étudiant
+            
         p
           button.btn.btn-primary.btn-block.login Se connecter
         
