@@ -5,36 +5,36 @@ const BASE = 'http://localhost:3200/api/v3';
 export class SGB {
   // GET /teacher/login?email&password
   static async authentifierEnseignant(email: string, password: string): Promise<{
-  message: string;
-  token: string;
-  user: { first_name: string; last_name: string; id: string };
-}> {
-  const qs = new URLSearchParams({ email, password }).toString();
-  const r = await fetch(`${BASE}/teacher/login?${qs}`);
-  if (!r.ok) throw new Error(`SGB /teacher/login ${r.status}`);
-
-  const data = (await r.json()) as {
     message: string;
     token: string;
     user: { first_name: string; last_name: string; id: string };
-  };
-  return data;
-}
+  }> {
+    const qs = new URLSearchParams({ email, password }).toString();
+    const r = await fetch(`${BASE}/teacher/login?${qs}`);
+    if (!r.ok) throw new Error(`SGB /teacher/login ${r.status}`);
+
+    const data = (await r.json()) as {
+      message: string;
+      token: string;
+      user: { first_name: string; last_name: string; id: string };
+    };
+    return data;
+  }
 
 
   // GET /teacher/fromtoken?token -> {user} 
   static async getEnseignant(token: string): Promise<{
-  user: { first_name: string; last_name: string; id: string };
-}> {
-  const qs = new URLSearchParams({ token }).toString();
-  const r = await fetch(`${BASE}/teacher/fromtoken?${qs}`);
-  if (!r.ok) throw new Error(`SGB /teacher/fromtoken ${r.status}`);
-
-  const data = (await r.json()) as {
     user: { first_name: string; last_name: string; id: string };
-  };
-  return data;
-}
+  }> {
+    const qs = new URLSearchParams({ token }).toString();
+    const r = await fetch(`${BASE}/teacher/fromtoken?${qs}`);
+    if (!r.ok) throw new Error(`SGB /teacher/fromtoken ${r.status}`);
+
+    const data = (await r.json()) as {
+      user: { first_name: string; last_name: string; id: string };
+    };
+    return data;
+  }
 
 
   // GET /teacher/all
@@ -93,28 +93,39 @@ export class SGB {
     const json: any = await r.json();
     return json.data as Array<{ group_id: string; student_id: string }>;
   }
-  
+
   // GET /student/login?email&password
   static async authentifierEtudiant(email: string, password: string): Promise<{
-      message: string;
-      token: string;
-      user: { first_name: string; last_name: string; id: string };
+    message: string;
+    token: string;
+    user: { first_name: string; last_name: string; id: string };
   }> {
-      const qs = new URLSearchParams({ email, password }).toString();
-      const r = await fetch(`${BASE}/student/login?${qs}`);
-      if (!r.ok) throw new Error(`SGB /student/login ${r.status}`);
-      return await r.json();
+    const qs = new URLSearchParams({ email, password }).toString();
+    const r = await fetch(`${BASE}/student/login?${qs}`);
+    if (!r.ok) throw new Error(`SGB /student/login ${r.status}`);
+    return await r.json();
   }
 
   // GET /student/fromtoken?token -> {user} 
-static async getEtudiant(token: string): Promise<{
+  static async getEtudiant(token: string): Promise<{
     user: { first_name: string; last_name: string; id: string };
-}> {
+  }> {
     const qs = new URLSearchParams({ token }).toString();
-    const r = await fetch(`${BASE}/student/fromtoken?${qs}`);  // Changement ici : ?token= au lieu de /:token
+    const r = await fetch(`${BASE}/student/fromtoken?${qs}`); // Changement ici : ?token= au lieu de /:token
     if (!r.ok) throw new Error(`SGB /student/fromtoken ${r.status}`);
     return await r.json();
-}
+  }
+
+  static async getGroupesPourEtudiant(studentId: string): Promise<Array<{
+    group_id: string;
+    student_id: string;
+  }>> {
+    const qs = new URLSearchParams({ student_id: studentId }).toString();
+    const r = await fetch(`${BASE}/student/groupstudent?${qs}`);
+    if (!r.ok) throw new Error(`SGB /student/groupstudent ${r.status}`);
+    const json: any = await r.json();
+    return json.data as Array<{ group_id: string; student_id: string }>;
+  }
 }
 
 

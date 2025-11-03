@@ -10,9 +10,31 @@ if (!email) {
   throw new Error('Aucun email de professeur trouvé.');
 }
 
-window.listeCoursProf = JSON.parse(localStorage.getItem(getListeCoursProfKey(email)) || '[]');
+// --- Nouveau : contrôle de rôle (empêche l'accès aux étudiants côté client)
+const role = (window && window.__USER_ROLE__) || localStorage.getItem('role') || '';
+const isTeacher = role === 'enseignant';
+
+// charger la liste seulement si enseignant (évite fuite d'infos côté client)
+window.listeCoursProf = isTeacher ? JSON.parse(localStorage.getItem(getListeCoursProfKey(email)) || '[]') : [];
 
 document.addEventListener('DOMContentLoaded', function () {
+  // si ce n'est pas un enseignant, afficher message et ne pas initialiser la page
+  if (!isTeacher) {
+    document.body.innerHTML = '';
+    const container = document.createElement('div');
+    container.style.margin = '3rem';
+    container.style.textAlign = 'center';
+    container.innerHTML = '<div class="alert alert-danger" role="alert">Accès réservé aux enseignants.</div>';
+    const retour = document.createElement('a');
+    retour.href = '/';
+    retour.className = 'btn btn-secondary mt-3';
+    retour.textContent = 'Retour';
+    container.appendChild(retour);
+    document.body.appendChild(container);
+    console.warn('Accès à mesCours bloqué pour le rôle:', role || '(non défini)');
+    return; // stop further initialization
+  }
+
   // S'assurer qu'il y a un conteneur dédié dans la page
   let container = document.getElementById('mes-cours-list');
   if (!container) {
