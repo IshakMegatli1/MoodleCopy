@@ -121,11 +121,25 @@ export class SGB {
     student_id: string;
   }>> {
     const qs = new URLSearchParams({ student_id: studentId }).toString();
-    const r = await fetch(`${BASE}/student/groupstudent?${qs}`);
+    const url = `${BASE}/student/groupstudent?${qs}`;
+    console.log('🔍 [SGB.getGroupesPourEtudiant] Appel API:');
+    console.log('   student_id envoyé :', studentId);
+    console.log('   URL complète      :', url);
+    
+    const r = await fetch(url);
     if (!r.ok) throw new Error(`SGB /student/groupstudent ${r.status}`);
     const json: any = await r.json();
-    return json.data as Array<{ group_id: string; student_id: string }>;
+    const allGroups = json.data || [];
+    console.log('   Réponse brute     :', allGroups.length, 'groupes (tous étudiants)');
+    
+    // ✅ FILTRER pour ne garder que les groupes de CET étudiant
+    const studentGroups = allGroups.filter((entry: any) => entry.student_id === studentId);
+    console.log('   Après filtrage    :', studentGroups.length, 'groupes pour', studentId);
+    if (studentGroups.length > 0) {
+      console.log('   Premier groupe    :', studentGroups[0]);
+    }
+    
+    return studentGroups as Array<{ group_id: string; student_id: string }>;
   }
 }
-
 

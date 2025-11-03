@@ -19,7 +19,7 @@ mixin navbar(titre, user)
             // Lien "Mes questionnaires" pour les étudiants
             if isStudent
               li.nav-item
-                a.nav-link(href="/mesQuestionnaires") Mes questionnaires
+                a.nav-link(href="/api/v1/etudiant/questionnaires") 📋 Mes questionnaires
             //- Afficher les options pour le type Admin
             if isAdmin
               li.nav-item.dropdown
