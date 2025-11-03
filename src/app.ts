@@ -133,6 +133,18 @@ class App {
       });
     });
 
+    // Route pour la page des questionnaires des étudiants
+    router.get('/mesQuestionnaires', (req, res) => {
+        const user = req.session?.user || { isAnonymous: true };
+        if (user.isAnonymous || !user.isEtudiant) {
+            return res.redirect('/signin');
+        }
+        res.render('etudiantQuestionnaires', {
+            title: `${titreBase} - Mes questionnaires`,
+            user
+        });
+    });
+
     this.expressApp.use('/', router);  // routage de base
 
     this.expressApp.use('/api/v1/jeu', jeuRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
