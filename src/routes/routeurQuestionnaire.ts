@@ -3,6 +3,8 @@ import { Router, Request, Response } from "express";
 import express from "express";
 import { CoursGroupe } from "../core/coursGroupe";
 import { ControleurQuestionnaire } from "../core/controleurQuestionnaire";
+// routes/routeurQuestionnaire.ts
+import { seedQuestionsIfEmpty } from "../core/seedQuestions"; // 👈 import
 
 export class RouteurQuestionnaire {
   private _router: Router;
@@ -22,15 +24,19 @@ export class RouteurQuestionnaire {
     if (!cours) {
       cours = new CoursGroupe(
         group_id,
-        "N/D",      // day
-        "N/D",      // hours
-        "Cours",    // activity
-        "N/D",      // mode
-        "N/D",      // local
-        "enseignant-nd" // teacher_id dummy
+        "N/D",
+        "N/D",
+        "Cours",
+        "N/D",
+        "N/D",
+        "enseignant-nd"
       );
       this.coursMap.set(group_id, cours);
     }
+
+    // 👇 Ajoute des questions démo si le cours est vide
+    seedQuestionsIfEmpty(cours);
+
     return cours;
   }
 
@@ -190,8 +196,7 @@ export class RouteurQuestionnaire {
     const { group_id, nom, tag } = req.params;
 
     try {
-      this.ensureCours(group_id); // ✅ important
-      // Vérifie que le questionnaire existe
+      this.ensureCours(group_id);
       this.ctl.recupererQuestionnaire(group_id, nom);
 
       const lignes = this.ctl
@@ -202,13 +207,18 @@ export class RouteurQuestionnaire {
           nbUtilisations,
         }));
 
+      // 👇 NEW: récupérer msg/err de l’URL après redirect
+      const message = (req.query.msg as string) || undefined;
+      const error = (req.query.err as string) || undefined;
+
       res.render("ajoutDeQuestionsAuQuestionnaire", {
         user: req.session?.user ?? { isAnonymous: false },
         group_id,
         nomQuestionnaire: nom,
         tag,
-        lignes, // [{ titre, categorie, nbUtilisations }]
-        // La vue pourra générer un <form> POST vers .../:tag/add avec des checkboxes name="titres"
+        lignes,
+        message,   // 👈
+        error,     // 👈
       });
     } catch (e: any) {
       res.status(400).render("ajoutDeQuestionsAuQuestionnaire", {
@@ -221,6 +231,7 @@ export class RouteurQuestionnaire {
       });
     }
   }
+
 
   // POST /cours/:group_id/questionnaires/:nom/categorie/:tag/add
   // Associe les questions sélectionnées et retourne à la gestion
@@ -266,11 +277,11 @@ export class RouteurQuestionnaire {
   private traiterAjoutQuestionsDansCategorie(req: Request, res: Response) {
     const { group_id, nom, tag } = req.params;
 
-    // Toujours récupérer un tableau (grâce à name="titres[]", ce sera déjà un array)
-    const titresRaw = req.body.titres;
-    const titres: string[] = Array.isArray(titresRaw)
-      ? titresRaw.map((s: string) => s.trim()).filter(Boolean)
-      : String(titresRaw || "").split(",").map(s => s.trim()).filter(Boolean);
+    // 🔑 Supporte l’ancien nom ET ton nom récent en fallback
+    const raw = req.body.questionsIds ?? req.body.titres;
+    const titres: string[] = Array.isArray(raw)
+      ? raw.map((s: string) => s.trim()).filter(Boolean)
+      : [String(raw || "").trim()].filter(Boolean);
 
     if (!titres.length) {
       return res.redirect(
@@ -284,7 +295,6 @@ export class RouteurQuestionnaire {
       this.ensureCours(group_id);
       const { added } = this.ctl.associerQuestionsAuQuestionnaire(group_id, nom, titres);
 
-      // Toujours retourner à la gestion, même si certaines n'ont pas matché
       const msg = added > 0
         ? `${added} question${added > 1 ? 's' : ''} ajoutée${added > 1 ? 's' : ''} au questionnaire.`
         : `Aucune nouvelle question ajoutée (doublons ou non trouvées).`;
@@ -300,5 +310,6 @@ export class RouteurQuestionnaire {
       );
     }
   }
+
 
 }

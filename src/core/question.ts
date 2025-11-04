@@ -45,6 +45,8 @@ export class Question{
         this.reponse = reponse;
         this.categorie = categorie;
         this.idGroupe = idGroupe;
+
+        this.questionnairesAssocies = new Array();
     }
     
     public getTitre(): string {

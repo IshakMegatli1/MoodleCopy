@@ -27,7 +27,7 @@ html
                 each l in lignes
                   tr
                     td
-                      input.form-check-input(type="checkbox" name="titres" value=l.titre)
+                      input.form-check-input(type="checkbox" name="questionsIds" value=l.titre)
                     td= l.titre
                     td= l.categorie || "(sans catégorie)"
                     td
@@ -43,3 +43,16 @@ html
           a.btn.btn-secondary(href=`/cours/${group_id}/questionnaires/${encodeURIComponent(nomQuestionnaire)}/categories`) ⬅️ Retour aux catégories
           a.btn.btn-outline-primary(href=`/cours/${group_id}/gestionQuestions`) ➕ Gérer les questions
 
+  // --- Toast de confirmation / erreur ---
+if message
+  div#toast-message.alert.alert-success(style="position:fixed;bottom:1rem;right:1rem;z-index:1050;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);")
+    strong ✅ #{message}
+if error
+  div#toast-message.alert.alert-danger(style="position:fixed;bottom:1rem;right:1rem;z-index:1050;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);")
+    strong ❌ #{error}
+
+script.
+  setTimeout(() => {
+    const el = document.getElementById('toast-message');
+    if (el) el.remove();
+  }, 4000);
