@@ -71,6 +71,25 @@ class Enseignant {
     +listeCours: Map<String, CoursGroupe>
     +listeCours: Map<String, CoursGroupe>
 }
+
+class Questionnaire {
+    +nom: string
+    +description: string
+    +actif: boolean
+    +questions: Question[]
+    +idCours: string
+    +getNomQuestionnaire(): string
+    +getDescription(): string
+    +getActif(): boolean
+    +getIdCours(): string
+    +getQuestions(): Question[]
+    +addQuestion(question: Question): void
+    +retirerQuestion(titre: string): void
+    +estVide(): boolean
+    +getNombreQuestions(): number
+    +supprimerQuestion(titre: string): void
+}
+
 class ControleurCours {
     +demanderListe(enseignant: Enseignant): Promise<Map<String, CoursGroupe>>
     +ajouterCours(enseignant: Enseignant, courseData: { group_id: string; day: string; hours: string; activity: string; mode: string; local: string; teacher_id: string; }): CoursGroupe
@@ -92,6 +111,17 @@ class ControleurQuestion {
     +supprimerQuestion(idGroupe: string, titre: string): Promise<Question[]>
 }
 
+class ControleurQuestionnaire {
+    -_coursMap: Map<string, CoursGroupe>
+    -getCoursOrThrow(idGroupe: string): CoursGroupe
+    -getQuestionnaireOrThrow(cours: CoursGroupe, nom: string): Questionnaire
+    +getQuestionnaires(idGroupe: string): Questionnaire[]
+    +creerQuestionnaire(idGroupe: string, nom: string, description: string, actif: boolean): Questionnaire
+    +recupererQuestionnaire(idGroupe: string, nom: string): Questionnaire
+    +associerQuestionsAuQuestionnaire(idGroupe: string, nom: string, titres: string[])
+    +public questionsParTagAvecCompteur(idGroupe: string, tag: string): { question: Question; nbUtilisations: number }[]
+}
+
 class Université {
     -listeEtudiants: Map<String, Etudiant>
     -listeEnseignants: Map<String, Enseignant>
@@ -103,10 +133,15 @@ class Université {
 
 Enseignant "1" -- "*" CoursGroupe : Enseigne > 
 Etudiant "1" -- "*" CoursGroupe : Suit un >
+CoursGroupe "1" -- "*" Question : Contient >
+CoursGroupe "1" -- "*" Questionnaire : Possede >
+Questionnaire "1" -- "*" Question : Comprend >
 Université "1" -- "*" Etudiant : inscrit dans <
 Université "1" -- "*" Enseignant : travail dans <
 ControleurEtudiant "1" -- "*" Etudiant : gere >
 ControleurEnseignant "1" -- "*" Enseignant : gere >
 ControleurCours "1" -- "*" CoursGroupe : gere >
+ControleurQuestion "1" -- "*" Question : gere >
+ControleurQuestionnaire "1" -- "*" Questionnaire : gere >
 
 @enduml

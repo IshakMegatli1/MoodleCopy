@@ -37,8 +37,6 @@ Assurez-vous d'utiliser toujours le même compte GitHub pour accéder à ce proj
 
 ## Exigences
 
-> Liste des exigences et personnes responsables de celles-ci.
-
 | Exigence                       | Responsable               |
 | -----------------------------  | ------------------------  |
 | CU05a conception               | Philippe / Marc-Sheldon   |
@@ -54,22 +52,14 @@ Assurez-vous d'utiliser toujours le même compte GitHub pour accéder à ce proj
 
 ## Modèle du domaine (MDD)
 
-> Le MDD est cumulatif : vous devez y ajouter des éléments à chaque itération (ou corriger les erreurs), selon la portée (et votre meilleure compréhension du problème) visée par votre solution. Utilisez une légende dans le MDD pour indiquer la couleur de chaque itération afin de faire ressortir les changements (ce n'est pas toujours possible pour les associations et les attributs). Voir les stéréotypes personnalisés : <https://plantuml.com/fr/class-diagram> et [comment faire une légende avec couleurs en PlantUML](https://stackoverflow.com/questions/30999290/how-to-generate-a-legend-with-colors-in-plantuml).
-
 ![alt text](MDD.png)
 ## Diagramme de séquence système (DSS)
-
-> Un seul DSS sera choisi et corrigé par l'auxiliaire d'enseignement
 
 ![dss-CU05a](dss-CU05a.png)
 ![dss-CU05a](dss-CU05b.png)
 
 
 ## Contrats
-
-> Si vous avez choisi un cas d'utilisation nécessitant un contrat, il faut le mettre dans cette section.
-> Note: même s'il y a plusieurs contrats, un seul contrat sera choisi et corrigé par l'auxiliaire d'enseignement
-> Note: il n'est pas nécessaire de mettre les préconditions mais je vous suggère fortement de les ajouter dans votre rapport. 
 
 CU05a1
 Opération : addQuestionnaire()
@@ -98,10 +88,6 @@ _______________________________________________________________________
 
 ## Réalisation de cas d'utilisation (RDCU)
 
-> Chaque cas d'utilisation nécessite une RDCU.
-> Note: une seule RDCU sera choisie et corrigée par l'auxiliaire d'enseignement
-> Suivez les directives d'implémentation dans le fichier README.md pour vous faciliter la tâche d'implémentation.
-
 ![RDCU-CU05a1](RDCU-CU05a-addQuestionnaire.png)
 ![RDCU-CU05a2](RDCU-CU05a-getQuestionnaires.png)
 ![RDCU-CU05b1](RDCU-CU05a-getQuestionnaires.png)
@@ -110,16 +96,9 @@ _______________________________________________________________________
 *** Nous n'avons pas de RDCU pour les opérations systèmes
 selectCategories() car c'est simplement une sélection sur l'interface
 
-
-
-## Diagramme de classe logicielle (DCL)
-
-> Facultatif, mais fortement suggéré
-> Ce diagramme vous aidera à planifier l'ordre d'implémentation des classes.  Très utile lorsqu'on utilise TDD.
-
 ### Diagramme de classe TPLANT
-- Générer un diagramme de classe avec l'outil TPLANT et commenter celui-ci par rapport à votre MDD.
-- https://www.npmjs.com/package/tplant
+Le diagramme de classe TPLANT généré est une image trop grosse et pas claire, se qui la rend impossible à joindre au rapport de laboratoire. Par contre, celui-ci se trouve dans le dossier de l'itération #2, qui possède lui-même le rapport. Il est sous le nom : digramme-classes.puml. 
+Ce que l'on remarque du diagramme de classe TPLANT est qu'il est similaire à notre MDD, puisqu'il utilise les mêmes classes avec les mêmes attributs. Toutefois, celui-ci possède plus de détails sur les classes qui ne seront pas démontré dans le MDD, comme les différentes méthodes ainsi que les getters/setters de chaque attribut.
   
 ## Retour sur la correction du rapport précédent
 La note du rapport précédent était très haute, sauf a quelques choses pret. Premièrement, nous avions
@@ -139,6 +118,6 @@ dans le controleur pour l'afficher) et nous avons perdus des points pour ces dia
 - [x] Vous avez autant de RDCU que d'opérations système
   - [x] Chaque décision de conception (affectation de responsabilité) est identifiée et surtout **justifiée** (par un GRASP ou autre heuristique)
   - [x] Votre code source (implémentation) est cohérent avec la RDCU (ce n'est pas juste un diagramme)
-- [ ] Vous avez un seul diagramme de classes
+- [x] Vous avez un seul diagramme de classes
 - [x] Vous avez remis la version PDF de ce document dans votre répertoire
-- [ ] [Vous avez regardé cette petite présentation pour l'architecture en couche et avez appliqué ces concepts](https://log210-cfuhrman.github.io/log210-valider-architecture-couches/#/) 
+- [x] [Vous avez regardé cette petite présentation pour l'architecture en couche et avez appliqué ces concepts](https://log210-cfuhrman.github.io/log210-valider-architecture-couches/#/) 
