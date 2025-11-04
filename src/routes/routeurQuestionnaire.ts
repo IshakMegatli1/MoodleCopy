@@ -233,47 +233,6 @@ export class RouteurQuestionnaire {
   }
 
 
-  // POST /cours/:group_id/questionnaires/:nom/categorie/:tag/add
-  // Associe les questions sélectionnées et retourne à la gestion
-  // private traiterAjoutQuestionsDansCategorie(req: Request, res: Response) {
-  //   const { group_id, nom, tag } = req.params;
-
-  //   // name="titres" peut être un tableau (checkboxes) ou une chaîne CSV
-  //   const titres: string[] = Array.isArray(req.body.titres)
-  //     ? (req.body.titres as string[])
-  //     : String(req.body.titres || "")
-  //         .split(",")
-  //         .map(s => s.trim())
-  //         .filter(Boolean);
-
-  //   if (!titres.length) {
-  //     return res.redirect(
-  //       `/cours/${encodeURIComponent(group_id)}/questionnaires/${encodeURIComponent(nom)}/categorie/${encodeURIComponent(tag)}?err=${encodeURIComponent(
-  //         "Aucune question sélectionnée."
-  //       )}`
-  //     );
-  //   }
-
-  //   try {
-  //     this.ensureCours(group_id); // ✅ important
-  //     this.ctl.associerQuestionsAuQuestionnaire(group_id, nom, titres);
-
-  //     // Comportement demandé: retour à la page de gestion des questionnaires
-  //     return res.redirect(
-  //       `/cours/${encodeURIComponent(group_id)}/gestionQuestionnaires?msg=${encodeURIComponent(
-  //         "Questionnaire sauvegardé."
-  //       )}`
-  //     );
-  //   } catch (e: any) {
-  //     return res.redirect(
-  //       `/cours/${encodeURIComponent(group_id)}/questionnaires/${encodeURIComponent(nom)}/categorie/${encodeURIComponent(tag)}?err=${encodeURIComponent(
-  //         e?.message || "Erreur lors de l’association."
-  //       )}`
-  //     );
-  //   }
-  // }
-
-
   private traiterAjoutQuestionsDansCategorie(req: Request, res: Response) {
     const { group_id, nom, tag } = req.params;
 
