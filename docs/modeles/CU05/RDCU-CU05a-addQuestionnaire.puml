@@ -7,17 +7,22 @@ participant ":RouteurQuestionnaires" as RQ
 participant ":Map<group_id, List<Questionnaire>>" as STORE
 participant "Questionnaire" as Q
 
-' Préconditions (CU01b déjà fait, group_id dispo)
-note over RQ
-  Préconditions :
-  - Enseignant authentifié
-  - Cours récupéré (CU01b) → group_id disponible
-end note
-
 -> RQ : addQuestionnaire(nom, description, actif, group_id)
+note right
+selon Contrôleur  
+La classe Routeur Questionnaire s'occupe
+du routage de tout les questionnaires,
+donc il est un controleur viable.
+end note
 
 
 RQ -> STORE : get(group_id)
+note right
+selon Expert 
+Cette classe contient toutes les
+listes de questionnaires, donc la responsabilité
+de les gérer y tombe logiquement
+end note
 STORE --> RQ : liste (ou null)
 RQ -> RQ : if (liste == null) then liste = []
 
