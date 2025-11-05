@@ -4,38 +4,40 @@
 
 | Étape jalon          | Date       |
 | :------------------- | :--------- |
-| Début de l'itération | 2025/09/24 |
-| Démo (séance 5)      | 2025/10/08 |
-| Fin de l'itération   | 2025/10/08 |
+| Début de l'itération | 2025/10/22 |
+| Démo (séance 5)      | 2025/11/05 |
+| Fin de l'itération   | 2025/11/05 |
 
 ## Objectifs clés
-- Présenter une démonstration technique de CU01 avec tests (2.5 points).
-- Présenter une démonstration technique de CU02a (question vrai ou faux) avec tests (2 points).
+- Présenter une démonstration technique de CU05a avec tests (2 points).
+- Présenter une démonstration technique de CU05b (question vrai ou faux) avec tests (1 points).
 
 ## Affectations d'éléments de travail
 
 Les éléments de travail suivants seront abordés dans cette itération:
 
-| Nom / Description                | Priorité | [Taille estimée (points)](#commentEstimer "Comment estimer?") | Assigné à (nom) | Documents de référence |
-| -------------------------------- | -------: | --------------------------: | ---------------------------| --------------------------------------      |
-| CU01                             | 1        | 2.5                         |                            |                                             |
-|   CU01 - analyse                 | 1        |                          | Philippe                   | Exigences pour le lab / cas d'utilisations  |
-|   CU01 - conception              |          |                             | Philippe                   | Exigences pour le lab / cas d'utilisations  |
-|   CU01 - test et implémentation  |          |                             | Ishak/Daniel               |                                             |
-|   CU01 - mise à jour des modèles |          |                             | Philippe/Daniel            |                                             |
-| CU02a                            | 1        | 2                           |                            | Exigences pour le lab / cas d'utilisations                       |
-| CU02a - conception               |          |                             | Marc-Sheldon Bazelais      |                                             |
-| CU02a - test et implémentation   |          |                             | Marc-Sheldon Bazelais      |                                             |
-| CU02a - mise à jour des modèles  |          |                             | Marc-Sheldon Bazelais      |                                             |
+| Exigence                       | Responsable               |
+| -----------------------------  | ------------------------  |
+| CU05a conception               | Philippe / Marc-Sheldon   |
+| CU05a analyse                  | Philippe / Marc-Sheldon   |
+| CU05a révision de modeles      | Philippe Bolduc           |
+| CU05a implémentation           | Marc-Sheldon              |
+| CU05a tests                    | Marc-Sheldon              |
+| CU05b conception               | Daniel / Philippe         |
+| CU05b analyse                  | Daniel / Philippe         |
+| CU05b révision de modeles      | Daniel / Philippe         |
+| CU05b implémentation           | Ishak / Daniel            |
+| CU05b tests                    | Ishak / Daniel            |
 
 ## Problèmes
 | Problème                                                                                             | Notes |
 | ---------------------------------------------------------------------------------------------------- | ----- |
-| Sans Objet                                                                                           | ----- |
+| Changement du nom de la classe SGB à Facade                                                          | ----- |
+
 ## Critères d'évaluation
 
 - 90% des cas de test passent.
-- Démonstration des fonctionnalités CU01 et CU02a pas à pas avec l'auxiliaire d'enseignement a reçu une réponse favorable.
+- Démonstration des fonctionnalités CU05a et CU05b pas à pas avec l'auxiliaire d'enseignement a reçu une réponse favorable.
 
 ## Évaluation
 
@@ -46,7 +48,7 @@ Les éléments de travail suivants seront abordés dans cette itération:
 | Résumé | |
 | ------------------------------------- | ------------------------------------------------------------------------ |
 | Cible d'évaluation                    | Itération <!-- *Cela pourrait être toute l'itération ou simplement un composant spécifique* -->                            |
-| Date d'évaluation  |   2025/10/08 |
+| Date d'évaluation  |   2025/11/05 |
 | Participants       | **Coéquipiers** : Philippe, Ishak, Daniel, Marc-Sheldon<br> **Auxiliaire d'enseignement** : Moustavi-Al-Manee Haque |
 | État du projet     | 🟢 <!-- 🔴🟠🟢 *Rouge, Orange, ou Vert.* --> |
 
@@ -74,7 +76,7 @@ Regardez votre diagramme TPLANT et répondez aux questions suivantes?
 4. Y a-t-il des problèmes de Code smell à identifier avec l'aide de TPLANT
    1. Mysterious name relié au décalage des représentations ou pas
       1. Identifier le renommage (réusinage) éventuel de classe et/ou méthodes.
-      Oui, tous les contrôleurs devraient avoir un nom différent qui est mieux associé à la logique du système. Pour l'instant, nous n'avons pas clairement de nom ou de classe dans le MDD qui pourrait prendre ce rôle, c'est un changement éventuel que l'on souhaite faire.
+      Oui, notre classe SGB devrait avoir un autre nom, par exemple "Facade" pour qu'elle soit cohérente avec nos RDCUs (nous avons changé le nom dans les RDCU, mais toujours pas dans le code).
    2. Large class (cohésion)
       1. Proposer d'appliquer le réusinage Extract class / GRAPS fabrication pure. 
       Pas applicable dans notre situation.
@@ -89,24 +91,18 @@ Regardez votre diagramme TPLANT et répondez aux questions suivantes?
 - Résoudre les problèmes de la dernière itération soulevés par l'auxiliaire d'enseignement.
   - La rétroaction de l'auxiliaire d'enseignement a été positive. Bon travail l'équipe!
 - Présenter une démonstration technique.
-  - Le CU06 a été convaincant pour l'auxiliaire d'enseignement, mais il a trouvé que les tests pour le CU07 n'étaient pas assez étoffés. On doit corriger ça à la prochaine itération si on veut que le CU07 compte pour l'implémentation finale.
+  - Le CU05a et CU05b a été convaincant pour l'auxiliaire d'enseignement.
 
-- Présenter une démonstration technique de CU01 avec tests
-   - Le CU01 a été convaincant pour l’auxiliaire, puisque toutes ses sous-fonctionnalités (a, b et c) ont été complétées. Toutefois, il semblerait que la couverture de nos tests ne soit pas suffisamment élevée pour ce cas d’utilisation.
-
- - Présenter une démonstration technique de CU02a (question vrai ou faux) avec tests.
-   - En ce qui concerne le CU02a, la démonstration a bel et bien été convaicante pour l'auxiliaire. 
+- Présenter une démonstration technique de CU05a et CU05b avec tests
+   - Le CU05 au complet a été convaincant pour l’auxiliaire, aucun commentaire a ajouté.
 
 ### Éléments de travail: prévus vs réalisés
 
-Tous les éléments du CU1 et CU2a ont été complétés, mais il faut retravailler le code.
-
-- CU01 - réoptimiser le code - Philippe
-- CU01 - refaire les tests - Daniel 
+Tous les éléments du CU05a et CU05b ont été complétés.
 
 ### Évaluation par rapport aux résultats selon les critères d'évaluation
 
-La démonstration du CU1 et CU2a avec l'auxiliaire a été bien accueilli,  mais attention: il faut rajouter des cas de tests, puisque le coverage n'était pas assez élevé.
+La démonstration du CU05a et CU05b avec l'auxiliaire a été bien accueilli, aucun commentaire a ajouté.
 
 ## Autres préoccupations et écarts
 
@@ -120,7 +116,7 @@ Dans notre équipe, il n'y a aucune situation du genre qui est survenue.
 
 Selon les statistiques générées par `gitinspector` Pierre et Jérémie font 90 % de la programmation et les deux autres membres doivent contribuer plus. Voir le script contribution.sh dans le répertoire scripts du projet.
 
-Pour la première itération, puisque nous apprenions le fonctionnement de Git, GitInspector ne constitue pas un outil fiable. Toutefois, tous les membres de l’équipe ont contribué de manière significative au travail (analyse, conception, programmation, plan d’itération, rapport, etc.).
+Pour la deuxième itération, GitInspector ne constitue pas un outil fiable, puisque chaque cooéquipier travaillait dans une branche différence et sur des aspects différents du travail (analyse, conception, programmation, plan d’itération, rapport, etc.). Toutefois, tous les membres de l’équipe ont contribué de manière significative au travail.
 
 ### Retrait d'un membre de l'équipe pour contribution non significative
 
