@@ -1,0 +1,54 @@
+@startuml
+skinparam sequenceMessageAlign center
+hide footbox
+title RDCU: CU05a - Ajouter questionnaire
+
+participant ":RouteurQuestionnaires" as RQ
+participant ":Map<group_id, List<Questionnaire>>" as STORE
+participant "Questionnaire" as Q
+
+-> RQ : addQuestionnaire(nom, description, actif, group_id)
+note right
+selon Contrôleur  
+La classe Routeur Questionnaire s'occupe
+du routage de tout les questionnaires,
+donc il est un controleur viable.
+end note
+
+
+RQ -> STORE : get(group_id)
+note right
+selon Expert 
+Cette classe contient toutes les
+listes de questionnaires, donc la responsabilité
+de les gérer y tombe logiquement
+end note
+STORE --> RQ : liste (ou null)
+RQ -> RQ : if (liste == null) then liste = []
+
+RQ -> RQ : existe = nom déjà présent dans liste ?
+
+alt existe == true
+  <-- RQ: render gestionQuestionnaires(liste, err="Le nom du questionnaire n'est pas unique")
+  note left
+    Postcondition (échec) :
+    - Aucune création
+    - Message d'erreur affiché
+  end note
+else
+  create Q
+  RQ -> Q : new Questionnaire(nom, description, actif, group_id)
+
+  RQ -> STORE : set(group_id, liste + Q)
+
+  <-- RQ: render ajoutQuestionsParCategorie(msg="Questionnaire ajouté avec succès")
+  note left
+    Postconditions (succès) :
+    - Nouveau questionnaire créé
+    - Associée uniquement au cours (clé = group_id)
+    - Liste de catégorie s'affiche pour l'ajout de questions au questionnaire
+  end note
+end
+
+
+@enduml

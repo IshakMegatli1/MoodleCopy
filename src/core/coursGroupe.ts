@@ -1,6 +1,7 @@
 import { Enseignant } from './enseignant';
 import { Etudiant } from './etudiant';
 import { Question } from './question';
+import { Questionnaire } from './questionnaire';
 
 export class CoursGroupe {
 	private _group_id: string;
@@ -12,6 +13,7 @@ export class CoursGroupe {
 	private _teacher_id: string;
 	private _listeEtudiants: Map<string, Etudiant>;
 	private _questions: Map<string, Question>;
+	private _questionnaires: Map<string, Questionnaire>;
 
 	constructor(
 		group_id: string,
@@ -22,7 +24,8 @@ export class CoursGroupe {
 		local: string,
 		teacher_id: string,
 		listeEtudiants?: Map<string, Etudiant>,
-		questions?: Map<string, Question>
+		questions?: Map<string, Question>,
+		questionnaires?: Map<string, Questionnaire>
 	) {
 		this._group_id = group_id;
 		this._day = day;
@@ -33,6 +36,7 @@ export class CoursGroupe {
 		this._teacher_id = teacher_id;
 		this._listeEtudiants = listeEtudiants || new Map<string, Etudiant>();
 		this._questions = questions || new Map<string, Question>();
+		this._questionnaires = questionnaires || new Map<string, Questionnaire>();
 	}
 
 	get group_id(): string {
@@ -112,5 +116,26 @@ export class CoursGroupe {
 
     public isQuestionDuplicated(titre: string): boolean {
         return this._questions.get(titre) !== undefined;
+    }
+
+	//Méthodes pour les questionnaires
+
+	public getQuestionnaires(): Array<Questionnaire> {
+        return Array.from(this._questionnaires.values());
+    }
+    public getQuestionnaire(nom: string): Questionnaire {
+        return this._questionnaires.get(nom);
+    }
+
+    public addQuestionnaire(questionnaire){
+        this._questionnaires.set(questionnaire.nom, questionnaire)
+    }
+
+    public isQuestionnaireDuplicated(nom: string): boolean {
+        return this._questionnaires.get(nom) !== undefined;
+    }
+
+    public supprimerQuestionnaire(nom: string): boolean {
+        return this._questionnaires.delete(nom);
     }
 }

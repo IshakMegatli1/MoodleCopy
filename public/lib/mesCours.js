@@ -10,9 +10,31 @@ if (!email) {
   throw new Error('Aucun email de professeur trouvé.');
 }
 
-window.listeCoursProf = JSON.parse(localStorage.getItem(getListeCoursProfKey(email)) || '[]');
+// --- Nouveau : contrôle de rôle (empêche l'accès aux étudiants côté client)
+const role = (window && window.__USER_ROLE__) || localStorage.getItem('role') || '';
+const isTeacher = role === 'enseignant';
+
+// charger la liste seulement si enseignant (évite fuite d'infos côté client)
+window.listeCoursProf = isTeacher ? JSON.parse(localStorage.getItem(getListeCoursProfKey(email)) || '[]') : [];
 
 document.addEventListener('DOMContentLoaded', function () {
+  // si ce n'est pas un enseignant, afficher message et ne pas initialiser la page
+  if (!isTeacher) {
+    document.body.innerHTML = '';
+    const container = document.createElement('div');
+    container.style.margin = '3rem';
+    container.style.textAlign = 'center';
+    container.innerHTML = '<div class="alert alert-danger" role="alert">Accès réservé aux enseignants.</div>';
+    const retour = document.createElement('a');
+    retour.href = '/';
+    retour.className = 'btn btn-secondary mt-3';
+    retour.textContent = 'Retour';
+    container.appendChild(retour);
+    document.body.appendChild(container);
+    console.warn('Accès à mesCours bloqué pour le rôle:', role || '(non défini)');
+    return; // stop further initialization
+  }
+
   // S'assurer qu'il y a un conteneur dédié dans la page
   let container = document.getElementById('mes-cours-list');
   if (!container) {
@@ -65,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     btnSupprimer.style.fontSize = '0.95rem';
     btnSupprimer.style.padding = '0.3rem 1.1rem';
 
-    // Bouton Gestion questions (remplacé par un <a> pour ouvrir la page serveur)
+    // Bouton Gestion questions (ouvre la page serveur)
     const linkManageQuestions = document.createElement('a');
     linkManageQuestions.href = `/cours/${encodeURIComponent(cours.group_id)}/gestionQuestions`;
     linkManageQuestions.className = 'btn btn-primary btn-sm';
@@ -73,21 +95,26 @@ document.addEventListener('DOMContentLoaded', function () {
     linkManageQuestions.style.fontSize = '0.95rem';
     linkManageQuestions.style.padding = '0.3rem 1.1rem';
 
-    // box.appendChild(label);
-    // box.appendChild(btnInfos);
-    // box.appendChild(btnSupprimer);
+    // ✅ Nouveau bouton : Gestion questionnaires
+    const linkManageQuestionnaires = document.createElement('a');
+    linkManageQuestionnaires.href = `/cours/${encodeURIComponent(cours.group_id)}/gestionQuestionnaires`;
+    linkManageQuestionnaires.className = 'btn btn-primary btn-sm';
+    linkManageQuestionnaires.textContent = 'Gestion questionnaires';
+    linkManageQuestionnaires.style.fontSize = '0.95rem';
+    linkManageQuestionnaires.style.padding = '0.3rem 1.1rem';
 
     // Ordre d’affichage
     box.appendChild(label);
     actions.appendChild(btnInfos);
     actions.appendChild(linkManageQuestions);
+    actions.appendChild(linkManageQuestionnaires); // << inséré ici
     actions.appendChild(btnSupprimer);
     box.appendChild(actions);
 
     btnSupprimer.addEventListener('click', function () {
       if (!confirm('Voulez-vous vraiment supprimer ce cours ?')) return;
-  window.listeCoursProf = window.listeCoursProf.filter(c => c.group_id !== cours.group_id);
-  localStorage.setItem(getListeCoursProfKey(email), JSON.stringify(window.listeCoursProf));
+      window.listeCoursProf = window.listeCoursProf.filter(c => c.group_id !== cours.group_id);
+      localStorage.setItem(getListeCoursProfKey(email), JSON.stringify(window.listeCoursProf));
       // Supprimer la boîte d'infos et la boîte d'étudiants si elles concernent ce cours
       const infoBox = document.querySelector('.box-infos-cours');
       if (infoBox && infoBox.textContent.includes(cours.group_id)) infoBox.remove();
@@ -106,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
       creerBoiteInfos(cours);
       creerBoiteEtudiant(cours.listeEtudiants || [], cours.group_id);
     });
+
     return box;
   }
 
@@ -124,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
     container.style.borderRadius = '8px';
     container.style.background = '#e9f5ff';
     container.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+
     const group = document.createElement('div');
     group.innerHTML = `<strong>Groupe :</strong> ${cours.group_id}`;
     const day = document.createElement('div');
@@ -134,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
     local.innerHTML = `<strong>Local :</strong> ${cours.local}`;
     const mode = document.createElement('div');
     mode.innerHTML = `<strong>Mode :</strong> ${cours.mode}`;
+
     container.appendChild(group);
     container.appendChild(day);
     container.appendChild(hours);
@@ -145,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function creerBoiteEtudiant(students, groupId) {
     const oldBox = document.querySelector('.box-etudiants-cours');
     if (oldBox) oldBox.remove();
+
     const container = document.createElement('div');
     container.className = 'box-etudiants-cours';
     container.setAttribute('data-group-id', groupId || '');
@@ -160,9 +191,11 @@ document.addEventListener('DOMContentLoaded', function () {
     container.style.borderRadius = '8px';
     container.style.background = '#f3fff3';
     container.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+
     const title = document.createElement('div');
     title.innerHTML = `<strong>Étudiants du cours :</strong>`;
     container.appendChild(title);
+
     if (students.length === 0) {
       const empty = document.createElement('div');
       empty.textContent = 'Aucun étudiant inscrit.';

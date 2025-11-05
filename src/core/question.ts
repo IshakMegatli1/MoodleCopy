@@ -1,3 +1,5 @@
+import { Questionnaire } from "./questionnaire";
+
 export class Question{
     titre: string;
     description: string;
@@ -6,6 +8,7 @@ export class Question{
     texteFaux: string;
     categorie:string;
     idGroupe: string;
+    questionnairesAssocies: Questionnaire[];
 
 
     constructor(
@@ -42,6 +45,8 @@ export class Question{
         this.reponse = reponse;
         this.categorie = categorie;
         this.idGroupe = idGroupe;
+
+        this.questionnairesAssocies = new Array();
     }
     
     public getTitre(): string {
@@ -66,6 +71,36 @@ export class Question{
 
     public getCategorie(): string {
         return this.categorie;
+    }
+    public getIdGroupe(): string{
+        return this.idGroupe;
+    }
+
+
+    //Section pour CU05a - Questionnaire
+
+    
+    public verifierReponse(reponse: boolean): string {
+        return reponse === this.reponse ? this.texteVrai : this.texteFaux;
+    }
+
+    public associerQuestionnaire(questionnaire: Questionnaire) {
+        this.questionnairesAssocies.push(questionnaire);
+    }
+    
+    public dissocierQuestionnaire(questionnaire: Questionnaire) {
+        const index = this.questionnairesAssocies.indexOf(questionnaire, 0);
+        if (index > -1) {
+            this.questionnairesAssocies.splice(index, 1);
+        }
+    }
+
+    public getNombreQuestionnairesAssocies(): number {
+        return this.questionnairesAssocies.length;
+    }
+
+    public estAssocie(questionnaire: Questionnaire): boolean {
+        return this.questionnairesAssocies.includes(questionnaire);
     }
 
 

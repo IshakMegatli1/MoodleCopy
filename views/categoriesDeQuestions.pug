@@ -1,0 +1,28 @@
+html
+  include includes/head.pug
+  body
+    +navbar("SGA – Catégories de questions", user)
+
+    .container.mt-5
+      .text-center.mb-4
+        h1.mb-2 Sélection des catégories
+        h4.text-muted Cours : #{group_id}
+        h5.text-muted Questionnaire : #{nomQuestionnaire}
+
+      if categories && categories.length
+        p.text-center Choisissez une catégorie :
+        .row.mt-3.g-3.justify-content-center
+          each c in categories
+            .col-sm-10.col-md-8.col-lg-6
+              a.btn.btn-outline-primary.w-100.d-flex.justify-content-between.align-items-center(
+                href=`/cours/${group_id}/questionnaires/${encodeURIComponent(nomQuestionnaire)}/categorie/${encodeURIComponent(c.categorie)}`
+              )
+                span= c.categorie
+                span.badge.bg-secondary(title="Nombre de questions dans cette catégorie") #{c.nb}
+      else
+        .alert.alert-info.text-center.mt-4
+          | Aucune catégorie de question disponible pour ce cours.
+
+      // ---- Actions ----
+      .d-flex.justify-content-center.gap-3.mt-4
+        a.btn.btn-secondary(href=`/cours/${group_id}/gestionQuestionnaires`) ⬅️ Retour à la gestion des questionnaires

@@ -12,4 +12,16 @@ export class ControleurEtudiant {
         }
         return listeEtudiants
     }   
+
+    /** retourne le token (utile pour le front) */
+      async authentifier(email: string, password: string): Promise<string> {
+        const { token } = await SGB.authentifierEtudiant(email, password);
+        return token;
+      }
+    
+      /** construit l'étudiant à partir du token (validation du token) */
+      async getEtudiant(token: string): Promise<Etudiant> {
+        const { user } = await SGB.getEtudiant(token);
+        return new Etudiant(user.first_name, user.last_name, token);
+      }
 }

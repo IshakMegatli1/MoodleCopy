@@ -29,32 +29,33 @@ export class RouteurEnseignant {
   }
 
   /** POST /api/v1/enseignant/login {email,password} */
- private async login(req: Request, res: Response, next: NextFunction) {
-  try {
-    const { email, password } = req.body || {};
-    if (!email) throw new InvalidParameterError('Le paramètre email est absent');
-    if (!password) throw new InvalidParameterError('Le paramètre password est absent');
+  private async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password } = req.body || {};
+      if (!email) throw new InvalidParameterError('Le paramètre email est absent');
+      if (!password) throw new InvalidParameterError('Le paramètre password est absent');
 
-    const token = await this._ctrl.authentifier(email, password);
-    const ens = await this._ctrl.getEnseignant(token);
+      const token = await this._ctrl.authentifier(email, password);
+      const ens = await this._ctrl.getEnseignant(token);
 
-    // Store user info in session for navbar
-    req.session.user = {
-      nom: `${ens.prenom} ${ens.nom}`,
-      hasPrivileges: true,
-      isAnonymous: false
-    };
-    req.session.token = token;
+      // Store user info in session for navbar
+      req.session.user = {
+        nom: `${ens.prenom} ${ens.nom}`,
+        hasPrivileges: true,
+        isAnonymous: false,
+        role: 'enseignant'
+      };
+      req.session.token = token;
 
-    res.status(200).send({
-      message: 'Success',
-      token,
-      user: { id: ens.id, firstName: ens.prenom, lastName: ens.nom }
-    });
-  } catch (e) {
-    res.status(401).json({ message: e.message || 'Login invalide' });
+      res.status(200).send({
+        message: 'Success',
+        token,
+        user: { id: ens.id, firstName: ens.prenom, lastName: ens.nom }
+      });
+    } catch (e) {
+      res.status(401).json({ message: e.message || 'Login invalide' });
+    }
   }
-}
 
   /** GET /api/v1/enseignant/fromtoken?token=... */
   private async fromToken(req: Request, res: Response, next: NextFunction) {

@@ -1,0 +1,70 @@
+doctype html
+html(lang="fr")
+  include includes/head.pug
+  body
+    +navbar("SGA – Mes questionnaires", user)
+
+    .container.mt-5
+      h1.mb-4.text-center 📋 Mes questionnaires
+
+      if !groupQuestionnaires || Object.keys(groupQuestionnaires).length === 0
+        .alert.alert-info.text-center
+          strong ℹ️ Aucun questionnaire disponible pour vos cours.
+          p.mb-0.mt-2 Vérifiez que vous êtes bien inscrit à des cours avec des questionnaires actifs.
+      else
+        //- Pour chaque groupe-cours de l'étudiant
+        each gid in Object.keys(groupQuestionnaires).sort()
+          - const info = groupInfos[gid] || { group_id: gid, titre: gid }
+          - const qns = groupQuestionnaires[gid] || []
+          
+          .card.mb-4.shadow-sm
+            .card-header.bg-primary.text-white
+              .d-flex.justify-content-between.align-items-center
+                div
+                  h5.mb-0
+                    | 📚 #{info.titre}
+                  small.text-white-50 #{info.group_id}
+                div
+                  if info.enseignant
+                    small.badge.bg-light.text-dark 👨‍🏫 #{info.enseignant}
+            
+            .card-body
+              if qns.length === 0
+                p.text-muted.text-center.mb-0
+                  em Aucun questionnaire disponible pour ce cours.
+              else
+                .table-responsive
+                  table.table.table-hover.mb-0
+                    thead
+                      tr
+                        th Questionnaire
+                        th.text-center Questions
+                        th.text-center Statut
+                        th.text-end Action
+                    tbody
+                      each qn in qns
+                        tr
+                          td
+                            strong= qn.nom
+                            if qn.description
+                              br
+                              small.text-muted= qn.description
+                          td.text-center
+                            span.badge.bg-info.text-dark= qn.nombreQuestions || 0
+                          td.text-center
+                            if qn.actif
+                              span.badge.bg-success ✓ Actif
+                            else
+                              span.badge.bg-secondary ✗ Inactif
+                          td.text-end
+                            a.btn.btn-sm.btn-primary(href=qn.url) 
+                              | 📝 Ouvrir
+
+      .mt-5.text-center
+        a.btn.btn-secondary.btn-lg(href="javascript:history.back()") 
+          | ⬅️ Retour
+
+    style.
+      .card-header h5 { font-size: 1.1rem; }
+      .table th { font-weight: 600; font-size: 0.9rem; }
+      .table td { vertical-align: middle; }

@@ -2,6 +2,8 @@
 mixin navbar(titre, user)
   - var isLoggedIn = !user.isAnonymous
   - var isAdmin = (user.hasPrivileges)
+  - var isTeacher = (user && user.role === 'enseignant')
+  - var isStudent = (user && user.role === 'etudiant')
   nav.navbar.navbar-expand-lg.navbar-light.bg-light
     .container
       a.navbar-brand(href="#") #{titre}
@@ -14,15 +16,19 @@ mixin navbar(titre, user)
             li.nav-item.active
               a.nav-link(href="/") Accueil
                 span.sr-only (current)
+            // Lien "Mes questionnaires" pour les étudiants
+            if isStudent
+              li.nav-item
+                a.nav-link(href="/api/v1/etudiant/questionnaires") 📋 Mes questionnaires
             //- Afficher les options pour le type Admin
             if isAdmin
-              //- li.nav-item
-              //-   a.nav-link(href="/stats") Classement
               li.nav-item.dropdown
                 a.nav-link.dropdown-toggle(href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Cours
                 .dropdown-menu(aria-labelledby="navbarDropdown")
-                  a.dropdown-item(href="/ajouterCours") Créer un cours
-                  a.dropdown-item(href="/mesCours") Gérer mes cours
+                  // seuls les admins ou enseignants voient ces actions
+                  if isAdmin || isTeacher
+                    a.dropdown-item(href="/ajouterCours") Créer un cours
+                    a.dropdown-item(href="/mesCours") Gérer mes cours
                   .dropdown-divider(href="#")
                   a.dropdown-item(href="#") Encore une autre action
               li.nav-item
@@ -34,8 +40,10 @@ mixin navbar(titre, user)
               li.nav-item.dropdown
                 a.nav-link.dropdown-toggle(href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Cours
                 .dropdown-menu(aria-labelledby="navbarDropdown")
-                  a.dropdown-item(href="/ajouterCours") Créer un cours
-                  a.dropdown-item(href="/mesCours") Gérer mes cours
+                  // uniquement les enseignants (pas les étudiants) voient ces actions
+                  if isTeacher
+                    a.dropdown-item(href="/ajouterCours") Créer un cours
+                    a.dropdown-item(href="/mesCours") Gérer mes cours
                   .dropdown-divider(href="#")
                   a.dropdown-item(href="#") Encore une autre action
               li.nav-item
