@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour afficher les détails d’une question sélectionnée
+
+participant ":ControleurQuestion" as c
+-> c : recupererQuestion(idGroupe: String, titre: String)
+note right
+selon Contrôleur
+Orchestre la logique d’application  
+et reçoit la requête provenant de l’interface.
+end note
+
+participant ":Map<String, Question>" as m
+c -> m : get(idGroupe, titre)
+note right 
+selon Expert  
+Connaît les classes du domaine  
+et sait comment récupérer les détails de la question sélectionnée.
+end note
+
+m --> c : q : Question
+note right : (les détails retournés : type, nom, énoncé, vérité, rétroactions, catégories "tags")
+<-- c : return q
+
+@enduml

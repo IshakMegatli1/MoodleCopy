@@ -1,0 +1,25 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour afficher une liste de questions
+
+participant ":ControleurQuestion" as c
+-> c : getQuestions(idGroupe: String)
+note right
+selon Contrôleur  
+Orchestre la logique d’application  
+et reçoit la requête provenant de l’interface.
+end note
+
+participant ":Facade" as f
+c -> f : getQuestions(idGroupe: String)
+note right
+selon Expert  
+Connaît les classes du domaine  
+et sait comment récupérer les questions du groupe.
+end note
+
+c <-- f : L = getList(idGroupe)
+<-- c : return L
+
+@enduml

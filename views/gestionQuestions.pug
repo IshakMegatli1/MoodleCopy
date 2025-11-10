@@ -12,10 +12,21 @@ html
         ul.list-group.mb-4
           each q in questions
             li.list-group-item
-              strong= q.titre
-              |  — #{q.description}
-              br
-              small.text-muted Vérité : #{q.reponse ? 'Vrai' : 'Faux'}
+              h5.mb-1= q.titre
+              p.mb-1.text-secondary #{q.description}
+              p.mb-1
+                strong Vérité :
+                |  #{q.reponse ? 'Vrai' : 'Faux'}
+              hr.my-2
+              p.mb-1
+                strong Rétroaction (bonne réponse) :
+                |  #{q.texteVrai}
+              p.mb-1
+                strong Rétroaction (mauvaise réponse) :
+                |  #{q.texteFaux}
+              p.mb-0
+                strong Catégorie :
+                span.badge.bg-info.ms-1 #{q.categorie}
       else
         p.text-muted.mb-4 Aucune question pour ce cours.
 

@@ -1,0 +1,21 @@
+@startuml
+
+skinparam sequenceMessageAlign center
+hide footbox
+title DSS : CU02b - Récupérer question
+
+actor "Enseignant" as e
+participant "Système" as s
+
+e -> s : getQuestions(idGroupe: String)
+
+s --> e : Afficher la liste de questionnaires du cours
+
+loop Tant que l'enseignant n'a pas terminé
+
+e -> s : recupererQuestion(idGroupe: String, titre: String)
+
+s --> e : Afficher les détails de la question sélectionnée (type, nom, énoncé, vérité, rétroactions, catégories "tags")
+
+end
+@enduml
