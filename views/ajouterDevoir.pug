@@ -1,0 +1,74 @@
+doctype html
+html(lang="fr")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Ajouter un devoir
+    style.
+      body { font-family: Arial, sans-serif; margin: 2em; }
+      h1 { color: #2c3e50; }
+      form { display: flex; flex-direction: column; gap: 1em; max-width: 500px; }
+      label { font-weight: bold; }
+      input, textarea, select { padding: 0.5em; border-radius: 5px; border: 1px solid #ccc; }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: .75em; }
+      button { background-color: #2c3e50; color: #fff; border: none; padding: 0.8em; border-radius: 5px; cursor: pointer; }
+      button:hover { background-color: #34495e; }
+      a { margin-top: 1em; display: inline-block; }
+
+  body
+    h1 Ajouter un devoir au cours #{group_id}
+
+    if error
+      p(style="color:red") #{error}
+    if message
+      p(style="color:green") #{message}
+
+    form(action=`/cours/${group_id}/devoirs/add` method="post" id="form-devoir")
+      // Champ : titre
+      label(for="titre") Titre du devoir
+      input(type="text" name="titre" id="titre" placeholder="Ex: Devoir 1 — Structures de données" required)
+
+      // Champ : description
+      label(for="description") Description
+      textarea(name="description" id="description" rows="3" placeholder="Décrivez brièvement le devoir" required)
+
+      // Champ : note maximale
+      label(for="noteMax") Note maximale
+      input(type="number" name="noteMax" id="noteMax" min="0" step="0.01" placeholder="Ex: 100" required)
+
+      // Dates : début et fin
+      .row
+        div
+          label(for="dateDebut") Date de début
+          input(type="datetime-local" name="dateDebut" id="dateDebut" required)
+        div
+          label(for="dateFin") Date de fin
+          input(type="datetime-local" name="dateFin" id="dateFin" required)
+
+      // Champ : état (actif/inactif)
+      label(for="etat") Actif ?
+      select(name="etat" id="etat" required)
+        option(value="true") Oui (devoir actif)
+        option(value="false") Non (devoir inactif)
+
+      // Boutons
+      button(type="submit") Créer le devoir
+      a(href=`/cours/${group_id}/gestionDevoirs`) ← Retour à la gestion des devoirs
+
+    // Validation légère côté client (cohérente avec le DSS: fin > début)
+    script.
+      (function() {
+        const form = document.getElementById('form-devoir');
+        form.addEventListener('submit', function(e) {
+          const d1 = document.getElementById('dateDebut').value;
+          const d2 = document.getElementById('dateFin').value;
+          if (d1 && d2) {
+            const t1 = new Date(d1);
+            const t2 = new Date(d2);
+            if (!(t2 > t1)) {
+              e.preventDefault();
+              alert('La date de fin doit être postérieure à la date de début.');
+            }
+          }
+        });
+      })();

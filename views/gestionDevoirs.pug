@@ -1,0 +1,82 @@
+doctype html
+html
+  include includes/head.pug
+  body
+    +navbar("SGA – Devoirs du cours", user)
+
+    .container.mt-5
+      .text-center.mb-4
+        h1.mb-2 Gestion des devoirs
+        h4.text-muted Cours : #{group_id}
+
+      // --- Liste des devoirs ---
+      if devoirs && devoirs.length
+        ul.list-group.mb-4
+          each d in devoirs
+            li.list-group-item.d-flex.justify-content-between.align-items-center
+              // Colonne gauche : infos devoir
+              .me-3
+                h5.mb-1= d.titre
+                if d.description
+                  p.mb-1.text-secondary(style="max-width: 60ch;")= d.description
+                p.mb-1
+                  strong Note maximale :
+                  |  #{d.noteMax}
+                p.mb-1
+                  strong Date de début :
+                  |  #{new Date(d.dateDebut).toLocaleDateString('fr-CA')}
+                p.mb-1
+                  strong Date de fin :
+                  |  #{new Date(d.dateFin).toLocaleDateString('fr-CA')}
+
+              // Colonne droite : état + actions
+              .d-flex.flex-column.align-items-center(style="min-width:180px;")
+                // État du devoir
+                small.text-muted.d-flex.align-items-center.justify-content-center.mb-2
+                  | État du devoir :
+                  if d.etat
+                    span.ms-2.badge.bg-success Actif
+                  else
+                    span.ms-2.badge.bg-secondary Inactif
+
+                // Actions (mêmes largeurs)
+                .d-flex.flex-column.align-items-stretch.w-100
+                  // Bouton afficher étudiants (par devoir)
+                  button.btn.btn-outline-primary.btn-sm.btn-show-students.w-100(
+                    type="button",
+                    data-devtitle=d.titre,
+                    data-group=group_id,
+                    style="min-width:180px;"
+                  ) Afficher étudiants
+
+              // Conteneur liste d'étudiants (caché par défaut)
+              .students-list-container(
+                data-dev-title=d.titre,
+                data-group-id=group_id,
+                style="display:none; margin-top:0.5rem;"
+              )
+      else
+        p.text-muted.mb-4 Aucun devoir pour ce cours.
+
+      // ---- Boutons d'action globaux ----
+      .d-flex.justify-content-center.gap-3.mt-4
+        a.btn.btn-secondary(href="/mesCours") ⬅️ Page précédente
+        a.btn.btn-primary(href='/cours/' + group_id + '/devoirs/add') ➕ Ajouter devoir
+        //- a.btn.btn-danger(href=`/cours/${group_id}/devoirs/delete`) 🗑️ Supprimer devoir
+
+// --- Toast de confirmation / erreur ---
+if message
+  div#toast-message.alert.alert-success(style="position:fixed;bottom:1rem;right:1rem;z-index:1050;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);")
+    strong ✅ #{message}
+if error
+  div#toast-message.alert.alert-danger(style="position:fixed;bottom:1rem;right:1rem;z-index:1050;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);")
+    strong ❌ #{error}
+
+script.
+  setTimeout(() => {
+    const el = document.getElementById('toast-message');
+    if (el) el.remove();
+  }, 4000);
+
+// Script qui gère l'affichage des étudiants par devoir
+script(src='/lib/gestionDevoirs.js')

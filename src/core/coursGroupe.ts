@@ -1,7 +1,9 @@
+import { De } from './de';
 import { Enseignant } from './enseignant';
 import { Etudiant } from './etudiant';
 import { Question } from './question';
 import { Questionnaire } from './questionnaire';
+import { Devoir } from './devoir';
 
 export class CoursGroupe {
 	private _group_id: string;
@@ -14,6 +16,7 @@ export class CoursGroupe {
 	private _listeEtudiants: Map<string, Etudiant>;
 	private _questions: Map<string, Question>;
 	private _questionnaires: Map<string, Questionnaire>;
+	private _devoirs: Map<string, Devoir>;
 
 	constructor(
 		group_id: string,
@@ -25,7 +28,8 @@ export class CoursGroupe {
 		teacher_id: string,
 		listeEtudiants?: Map<string, Etudiant>,
 		questions?: Map<string, Question>,
-		questionnaires?: Map<string, Questionnaire>
+		questionnaires?: Map<string, Questionnaire>,
+		devoirs?: Map<string, Devoir>
 	) {
 		this._group_id = group_id;
 		this._day = day;
@@ -37,6 +41,7 @@ export class CoursGroupe {
 		this._listeEtudiants = listeEtudiants || new Map<string, Etudiant>();
 		this._questions = questions || new Map<string, Question>();
 		this._questionnaires = questionnaires || new Map<string, Questionnaire>();
+		this._devoirs = devoirs || new Map<string, Devoir>();
 	}
 
 	get group_id(): string {
@@ -138,4 +143,21 @@ export class CoursGroupe {
     public supprimerQuestionnaire(nom: string): boolean {
         return this._questionnaires.delete(nom);
     }
+
+	//Méthodes pour les devoirs
+
+	public getDevoirs(): Array<Devoir> {
+		return Array.from(this._devoirs.values());
+	}
+	public getDevoir(titre: string): Devoir {
+		return this._devoirs.get(titre);
+	}
+
+	public addDevoir(devoir: Devoir): void {
+		this._devoirs.set(devoir.titre, devoir);
+	}
+
+	public isDevoirDuplicated(titre: string): boolean {
+		return this._devoirs.get(titre) !== undefined;
+	}	
 }

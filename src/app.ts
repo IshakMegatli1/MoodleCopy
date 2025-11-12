@@ -17,6 +17,7 @@ import { RouteurEtudiant } from './routes/routeurEtudiant';
 import { RouteurQuestions } from './routes/routeurQuestions';
 import { RouteurQuestionnaire } from './routes/routeurQuestionnaire';
 import { CoursGroupe } from './core/coursGroupe'; // <-- ✅ AJOUT
+import { RouteurDevoir } from './routes/routeurDevoir'; // <-- ✅ AJOUT
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -173,6 +174,9 @@ class App {
 
     const routeurQuestions = new RouteurQuestions(coursMap);
     this.expressApp.use("/", routeurQuestions.router);
+
+    const routeurDevoir = new RouteurDevoir(coursMap); // <-- ✅ utilise la map
+    this.expressApp.use("/", routeurDevoir.router);           // <-- ✅ monté à la racine  
   }
 
   private handleErrors(err: any, req: any, res: any, next: NextFunction) {

@@ -103,11 +103,20 @@ document.addEventListener('DOMContentLoaded', function () {
     linkManageQuestionnaires.style.fontSize = '0.95rem';
     linkManageQuestionnaires.style.padding = '0.3rem 1.1rem';
 
+    // ✅ Nouveau bouton : Gestion devoirs
+    const linkManageDevoirs = document.createElement('a');
+    linkManageDevoirs.href = `/cours/${encodeURIComponent(cours.group_id)}/gestionDevoirs`;
+    linkManageDevoirs.className = 'btn btn-primary btn-sm';
+    linkManageDevoirs.textContent = 'Gestion devoirs';
+    linkManageDevoirs.style.fontSize = '0.95rem';
+    linkManageDevoirs.style.padding = '0.3rem 1.1rem';
+
     // Ordre d’affichage
     box.appendChild(label);
     actions.appendChild(btnInfos);
     actions.appendChild(linkManageQuestions);
     actions.appendChild(linkManageQuestionnaires); // << inséré ici
+    actions.appendChild(linkManageDevoirs);        // << inséré ici
     actions.appendChild(btnSupprimer);
     box.appendChild(actions);
 
