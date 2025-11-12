@@ -25,6 +25,10 @@ title Modèle du domaine
   class ControleurQuestionnaire{
 
   }
+
+  class ControleurDevoir{
+
+  }
   
 
   class Université {
@@ -55,6 +59,7 @@ title Modèle du domaine
     listeEtudiant : Map<String,Etudiant>
     listeQuestionnaire : Map<String,Questionnaire>
     listeQuestion : Map<String,Question>
+    listeDevoir : Map<String,Devoir>
     
   }
 
@@ -76,6 +81,33 @@ title Modèle du domaine
     idCoursGroupe : String
   }
 
+  class Devoir{
+   titre : String
+  description : String
+  noteMax : number
+  dateDebut : Date
+  dateFin : Date
+  etat : boolean
+  groupId : String
+  }
+
+' --- Classes de l’itération 1 (rouge) ---
+class CoursGroupe #FFB3B3
+class Enseignant #FFB3B3
+class Etudiant #FFB3B3
+class Université #FFB3B3
+class ControleurCours #FFB3B3
+class ControleurEnseignant #FFB3B3
+class ControleurEtudiant #FFB3B3
+' --- Classes de l’itération 2 (vert) ---
+class Questionnaire #B3FFB3
+class ControleurQuestionnaire #B3FFB3
+class ControleurQuestion #B3FFB3
+class Question #B3FFB3
+' --- Classes de l’itération 3 (bleu) ---
+class Devoir #B3D9FF
+class ControleurDevoir #B3D9FF
+
 ' associations
 
 Enseignant "1" -- "*" CoursGroupe : Enseigne > 
@@ -84,10 +116,20 @@ Université "1" -- "*" Etudiant : inscrit dans <
 Université "1" -- "*" Enseignant : travail dans <
 Questionnaire "1" -- "*" Question : regroupe >
 CoursGroupe "1" -- "*" Questionnaire : propose >
+CoursGroupe "1" -- "*" Devoir : propose >
 
 ControleurEtudiant "1" -- "*" Etudiant : gere >
 ControleurEnseignant "1" -- "*" Enseignant : gere >
 ControleurCours "1" -- "*" CoursGroupe : gere >
 ControleurQuestion "1" -- "*" Question : gere >
 ControleurQuestionnaire "1" -- "*" Questionnaire : gere >
+ControleurDevoir "1" -- "*" Devoir : gere >
+
+legend right
+    | Couleur | Type |
+    |<#FFB3B3>| Itération 1 |
+    |<#B3FFB3>| Itération 2 |
+    |<#B3D9FF>| Itération 3 |
+endlegend
+
 @enduml
