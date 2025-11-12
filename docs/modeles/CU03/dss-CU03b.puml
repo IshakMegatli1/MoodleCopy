@@ -1,0 +1,21 @@
+@startuml
+
+skinparam sequenceMessageAlign center
+hide footbox
+title DSS : CU03b - Récupérer devoir
+
+actor "Enseignant" as e
+participant "Système" as s
+
+e -> s : getDevoirs(idGroupe: String)
+
+s --> e : Afficher la liste des devoirs du cours
+
+loop Tant que l'enseignant n'a pas terminé
+
+e -> s : recupererDevoir(idGroupe: String, titre: String)
+
+s --> e : Afficher les détails du devoir sélectionné (titre, description, noteMax, dateDebut, dateFin, etat, liste étudiants)
+
+end
+@enduml

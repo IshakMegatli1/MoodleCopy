@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour afficher les détails d’un devoir sélectionné
+
+participant ":ControleurDevoir" as c
+-> c : recupererQuestionnaire(idGroupe: string, titre: string)
+note right
+selon Contrôleur
+Orchestre la logique d’application  
+et reçoit la requête provenant de l’interface.
+end note
+
+participant ":Map<String, Devoir>" as m
+c -> m : get(idGroupe, titre)
+note right 
+selon Expert  
+Connaît les classes du domaine  
+et sait comment récupérer les détails du questionnaire sélectionné.
+end note
+
+m --> c : d : Devoirs
+note right : (les détails retournés : titre, description, noteMax, dateDebut, dateFin, etat, liste étudiants)
+<-- c : return d
+
+@enduml

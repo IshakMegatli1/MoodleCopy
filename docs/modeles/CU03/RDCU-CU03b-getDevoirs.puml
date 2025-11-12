@@ -1,0 +1,25 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour afficher une liste de devoirs
+
+participant ":ControleurDevoir" as c
+-> c : getDevoirs(idGroupe: string)
+note right
+selon Contrôleur  
+Orchestre la logique d’application  
+et reçoit la requête provenant de l’interface.
+end note
+
+participant ":Facade" as f
+c -> f : getDevoirs(idGroupe: string)
+note right
+selon Expert  
+Connaît les classes du domaine  
+et sait comment récupérer les questionnaires du groupe.
+end note
+
+c <-- f : L = getList(idGroupe)
+<-- c : return L
+
+@enduml
