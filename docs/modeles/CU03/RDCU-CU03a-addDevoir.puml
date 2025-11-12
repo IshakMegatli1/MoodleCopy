@@ -1,0 +1,72 @@
+@startuml
+skinparam sequenceMessageAlign center
+hide footbox
+title RDCU: CU03b - Ajouter devoir
+
+participant ":RouteurDevoirs" as RD
+participant ":Map<group_id, List<Devoir>>" as STORE
+participant "Devoir" as D
+
+-> RD : addDevoir(titre, description, noteMax, dateDebut, dateFin, etat)
+note right
+selon Contrôleur  
+La classe Routeur Devoirs s'occupe
+du routage de tous les devoirs,
+donc il est un contrôleur viable.
+end note
+
+RD -> RD : group_id = contexte.groupeCourant()
+note right
+Le group_id provient du contexte de navigation
+(p.ex. cours/groupe sélectionné dans l'URL ou la session).
+end note
+
+RD -> STORE : get(group_id)
+note right
+selon Expert  
+Cette structure contient toutes les
+listes de devoirs par groupe/cours, donc la responsabilité
+de les gérer y tombe logiquement.
+end note
+
+STORE --> RD : liste (ou null)
+RD -> RD : if (liste == null) then liste = []
+
+RD -> RD : existe = titre déjà présent dans liste ?
+
+alt existe == true
+  <-- RD: render gestionDevoirs(liste, err="Le titre du devoir n'est pas unique")
+  note left
+    Postcondition (échec) :
+    - Aucune création
+    - Message d'erreur affiché
+  end note
+
+else
+  RD -> RD : dateInvalide = (dateFin < dateDebut) ?
+
+  alt dateInvalide == true
+    <-- RD: render gestionDevoirs(liste, err="La date de fin doit être postérieure à la date de début")
+    note left
+      Postcondition (échec) :
+      - Aucune création
+      - Message d'erreur affiché
+    end note
+
+  else
+    create D
+    RD -> D : new Devoir(titre, description, noteMax, dateDebut, dateFin, etat, group_id)
+
+    RD -> STORE : set(group_id, liste + D)
+
+    <-- RD: render gestionDevoirs(liste + D, msg="Devoir ajouté avec succès")
+    note left
+      Postconditions (succès) :
+      - Nouveau devoir créé
+      - Associé uniquement au cours (clé = group_id)
+      - Retour à la gestion des devoirs avec la liste à jour
+    end note
+  end
+end
+
+@enduml

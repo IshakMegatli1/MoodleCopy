@@ -1,0 +1,25 @@
+@startuml
+
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS: CU03a - Ajouter devoir
+actor ":Enseignant" as c
+participant ":Système" as s
+c->s : getDevoirs(idCours: String)
+c<<--s : La liste des devoirs du cours
+loop tant qu'il y a des devoirs à ajouter
+    c->s : addDevoir(titre: String, description: String, noteMax: Float, dateDebut: Date, dateFin: Date, etat: Boolean)
+    alt si on tente d'ajouter une question avec titre dupliqué
+        c<<--s : Message d'erreur: Le titre du devoir n’est pas unique pour ce cours
+    end
+    alt si la date de fin est antérieure à la date de début
+        c<<--s : Message d'erreur: La date de fin doit être postérieure à la date de début
+    end
+    c<<--s : Message de confirmation: Devoir ajoutée et associée à la banque du cours
+end
+
+
+@enduml
