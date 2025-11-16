@@ -40,7 +40,7 @@ html
                     span.ms-2.badge.bg-secondary Inactif
 
                 // Actions (mêmes largeurs)
-                .d-flex.flex-column.align-items-stretch.w-100
+                .d-flex.flex-column.align-items-stretch.w-100.gap-2
                   // Bouton afficher étudiants (par devoir)
                   button.btn.btn-outline-primary.btn-sm.btn-show-students.w-100(
                     type="button",
@@ -48,6 +48,18 @@ html
                     data-group=group_id,
                     style="min-width:180px;"
                   ) Afficher étudiants
+                  
+                  // 🆕 Bouton supprimer
+                  form.m-0(
+                    action=`/cours/${group_id}/devoirs/delete`
+                    method="post"
+                    onsubmit=`return confirm('Êtes-vous sûr de vouloir supprimer le devoir "${d.titre}" ?');`
+                  )
+                    input(type="hidden" name="titre" value=d.titre)
+                    button.btn.btn-danger.btn-sm.w-100(
+                      type="submit"
+                      style="min-width:180px;"
+                    ) 🗑️ Supprimer
 
               // Conteneur liste d'étudiants (caché par défaut)
               .students-list-container(

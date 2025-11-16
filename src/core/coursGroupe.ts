@@ -147,17 +147,21 @@ export class CoursGroupe {
 	//Méthodes pour les devoirs
 
 	public getDevoirs(): Array<Devoir> {
-		return Array.from(this._devoirs.values());
-	}
-	public getDevoir(titre: string): Devoir {
-		return this._devoirs.get(titre);
-	}
+        return Array.from(this._devoirs.values());
+    }
+    public getDevoir(titre: string): Devoir {
+        return this._devoirs.get(titre);
+    }
 
-	public addDevoir(devoir: Devoir): void {
-		this._devoirs.set(devoir.titre, devoir);
-	}
+    public addDevoir(devoir: Devoir): void {
+        this._devoirs.set(devoir.titre, devoir);
+    }
 
-	public isDevoirDuplicated(titre: string): boolean {
-		return this._devoirs.get(titre) !== undefined;
-	}	
+    public isDevoirDuplicated(titre: string): boolean {
+        return this._devoirs.get(titre) !== undefined;
+    }
+
+    public supprimerDevoir(titre: string): boolean {
+        return this._devoirs.delete(titre);
+    }
 }

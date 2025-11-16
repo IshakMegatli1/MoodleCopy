@@ -36,6 +36,11 @@ export class RouteurDevoir {
         express.urlencoded({ extended: false }),
         this.traiterAjout.bind(this)    
         );
+        this._router.post(
+            '/cours/:group_id/devoirs/delete',
+            express.urlencoded({ extended: false }),
+            this.traiterSuppression.bind(this)
+        );
     }
 
     private afficherListe(req: Request, res: Response, _next: NextFunction) {
@@ -173,4 +178,67 @@ export class RouteurDevoir {
             )}`
         );
     }
-}       
+
+    private traiterSuppression(req: Request, res: Response) {
+        const { group_id } = req.params;
+        const titre = (req.body.titre || '').trim();
+
+        if (!titre) {
+            return res.redirect(
+                `/cours/${encodeURIComponent(group_id)}/gestionDevoirs?err=${encodeURIComponent(
+                    'Le titre du devoir est requis pour la suppression.'
+                )}`
+            );
+        }
+
+        // ✅ Vérifier si le devoir est utilisé par des étudiants
+        if (this.coursMap) {
+            const cours = this.coursMap.get(group_id);
+            if (cours) {
+                const devoir = cours.getDevoir(titre);
+                if (devoir) {
+                    // Vérifier les soumissions (propriété ajoutée dans les tests)
+                    const soumissions = (devoir as any).soumissions || [];
+                    if (soumissions.length > 0) {
+                        return res.redirect(
+                            `/cours/${encodeURIComponent(group_id)}/gestionDevoirs?err=${encodeURIComponent(
+                                'Impossible de supprimer ce devoir car il a été utilisé par des étudiants.'
+                            )}`
+                        );
+                    }
+                }
+            }
+        }
+
+        // ✅ Supprimer de la Map legacy (devoirsParCours)
+        const liste = devoirsParCours.get(group_id) || [];
+        const indexLegacy = liste.findIndex(d => d.titre === titre);
+        if (indexLegacy !== -1) {
+            liste.splice(indexLegacy, 1);
+            devoirsParCours.set(group_id, liste);
+        }
+
+        // ✅ Supprimer du CoursGroupe (source maître)
+        let succes = false;
+        if (this.coursMap) {
+            const cours = this.coursMap.get(group_id);
+            if (cours && typeof cours.supprimerDevoir === 'function') {
+                succes = cours.supprimerDevoir(titre);
+            }
+        }
+
+        if (!succes && indexLegacy === -1) {
+            return res.redirect(
+                `/cours/${encodeURIComponent(group_id)}/gestionDevoirs?err=${encodeURIComponent(
+                    'Devoir introuvable.'
+                )}`
+            );
+        }
+
+        return res.redirect(
+            `/cours/${encodeURIComponent(group_id)}/gestionDevoirs?msg=${encodeURIComponent(
+                `Devoir "${titre}" supprimé avec succès.`
+            )}`
+        );
+    }
+}
