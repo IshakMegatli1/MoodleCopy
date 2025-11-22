@@ -104,16 +104,17 @@ export class ControleurQuestion {
     return maj;
   }
 
-  /** Supprimer une question par titre. */
-  public async supprimerQuestion(idGroupe: string, titre: string) {
+  public supprimerQuestion(idGroupe: string, titre: string) {
     const cours = this.getCoursOrThrow(idGroupe);
-
-    // Idéal: cours.removeQuestion(titre)
-    const existed: boolean = (cours as any)._questions?.delete(titre) ?? false;
-    if (!existed) throw new Error("Question introuvable.");
-
+    const questionnaires = cours.getQuestionnaires?.() ?? [];
+    const utilise = questionnaires.some(q =>
+      (q.questions || []).some(qu => qu.titre === titre)
+    );
+    if (utilise) {
+      throw new Error('Impossible de supprimer: utilisée dans un questionnaire.');
+    }
+    const ok = cours.supprimerQuestion(titre);
+    if (!ok) throw new Error('Question introuvable.');
     return cours.getQuestions();
   }
 }
-
-// export default ControleurQuestion;

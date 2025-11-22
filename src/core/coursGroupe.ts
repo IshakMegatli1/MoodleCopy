@@ -104,7 +104,6 @@ export class CoursGroupe {
 		this._listeEtudiants.set(etudiant.id, etudiant)
 	}
 
-
 	// Méthodes pour les questions
 	public getQuestions(): Array<Question> {
         return Array.from(this._questions.values());
@@ -123,8 +122,11 @@ export class CoursGroupe {
         return this._questions.get(titre) !== undefined;
     }
 
-	//Méthodes pour les questionnaires
+	public supprimerQuestion(titre: string): boolean {
+		return this._questions.delete(titre);
+	}
 
+	// Méthodes pour les questionnaires
 	public getQuestionnaires(): Array<Questionnaire> {
         return Array.from(this._questionnaires.values());
     }
@@ -144,8 +146,7 @@ export class CoursGroupe {
         return this._questionnaires.delete(nom);
     }
 
-	//Méthodes pour les devoirs
-
+	// Méthodes pour les devoirs
 	public getDevoirs(): Array<Devoir> {
         return Array.from(this._devoirs.values());
     }

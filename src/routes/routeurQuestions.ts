@@ -33,13 +33,11 @@ export class RouteurQuestions {
   private init() {
     this._router.get('/cours/:group_id/gestionQuestions', this.afficherListe.bind(this));
     this._router.get('/cours/:group_id/questions/add', this.afficherFormAjout.bind(this));
-    this._router.post(
-      '/cours/:group_id/questions/add',
+    this._router.post('/cours/:group_id/questions/add',
       express.urlencoded({ extended: false }),
       this.traiterAjout.bind(this)
     );
-    this._router.post(
-      '/cours/:group_id/questions/delete',
+    this._router.post('/cours/:group_id/questions/delete',
       express.urlencoded({ extended: false }),
       this.traiterSuppression.bind(this)
     );
@@ -134,26 +132,40 @@ export class RouteurQuestions {
   private traiterSuppression(req: Request, res: Response) {
     const { group_id } = req.params;
     const titre = (req.body.titre || '').trim();
-
     if (!titre) {
-      return res.redirect(`/cours/${encodeURIComponent(group_id)}/gestionQuestions?err=${encodeURIComponent('Veuillez fournir le titre de la question à supprimer.')}`);
+      return res.redirect(`/cours/${encodeURIComponent(group_id)}/gestionQuestions?err=${encodeURIComponent('Titre requis.')}`);
     }
 
-    // Map historique
-    const liste = questionsParCours.get(group_id) || [];
-    const next = liste.filter(q => q.titre.trim().toLowerCase() !== titre.toLowerCase());
-    questionsParCours.set(group_id, next);
+    // Legacy list (si encore utilisée)
+    const legacy = questionsParCours.get(group_id) || [];
+    const idx = legacy.findIndex(q => q.titre === titre);
+    if (idx !== -1) {
+      legacy.splice(idx, 1);
+      questionsParCours.set(group_id, legacy);
+    }
 
-    // ✅ Synchroniser aussi dans CoursGroupe si dispo
+    let deleted = false;
     if (this.coursMap) {
       const cours = this.coursMap.get(group_id);
       if (cours) {
-        // ta classe n'a pas de removeQuestion, on contourne proprement :
-        // soit on ajoute une méthode, soit on fait :
-        (cours as any)._questions?.delete(titre);
+        // Vérification questionnaire
+        const questionnaires = cours.getQuestionnaires?.() ?? [];
+        const utilise = questionnaires.some(q =>
+          (q.questions || []).some(qu => qu.titre === titre)
+        );
+        if (utilise) {
+          return res.redirect(`/cours/${encodeURIComponent(group_id)}/gestionQuestions?err=${encodeURIComponent('Question utilisée dans un questionnaire.')}`);
+        }
+        deleted = cours.supprimerQuestion?.(titre) || false;
       }
+    }
+
+    if (!deleted && idx === -1) {
+      return res.redirect(`/cours/${encodeURIComponent(group_id)}/gestionQuestions?err=${encodeURIComponent('Question introuvable.')}`);
     }
 
     return res.redirect(`/cours/${encodeURIComponent(group_id)}/gestionQuestions?msg=${encodeURIComponent(`Question "${titre}" supprimée.`)}`);
   }
+
+  
 }
