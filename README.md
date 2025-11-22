@@ -1,3 +1,7 @@
+# Video Demonstration of the app 
+[![Watch the video](https://img.youtube.com/vi/4De9-f6kVCE/hqdefault.jpg)](https://www.youtube.com/watch?v=4De9-f6kVCE)
+
+
 # Squelette de code pour le laboratoire LOG210
 
 Ce squelette contient un exemple de jeu de dés réalisé selon la méthodologie du cours et avec des tests.
